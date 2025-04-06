@@ -15,7 +15,7 @@
     "@hello-pangea/dnd": "^18.0.1",
     "@material-ui/core": "^4.12.4",
     "@mui/material": "^7.0.1",
-    "@siberiacancode/reactuse": "^0.0.116",
+    "@reactuses/core": "^6.0.1",
     "@tauri-apps/api": "^2.4.1",
     "@tauri-apps/plugin-sql": "^2.0.1",
     "autoprefixer": "^10.4.20",

@@ -6,7 +6,7 @@ import {
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { CrossIcon } from "@/ui/cross-icon";
-import { useClickOutside } from "@siberiacancode/reactuse";
+import { useClickOutside } from "@reactuses/core";
 import { CSSProperties, FormEvent, useRef, useState } from "react";
 import Database from "@tauri-apps/plugin-sql";
 import { Draggable, DraggableProvided, Droppable } from "@hello-pangea/dnd";

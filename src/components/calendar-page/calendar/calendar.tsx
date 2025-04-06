@@ -81,7 +81,7 @@ export const Calendar = () => {
                 {year}
               </p>
               <Input
-                className="w-[30px] h-[30px] focus:hidden text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')]"
+                className="w-[30px] h-[30px] !p-0 text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')] selection:bg-transparent selection:text-transparent focus:bg-transparent focus:text-transparent"
                 name="date"
                 id="date"
                 type="date"
