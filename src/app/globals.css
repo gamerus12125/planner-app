@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+body {
+  background-color: #25283D;
+  color: #fff;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
