@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# build dirs and files
+.next
+yarn.lock
+out
+/src-tauri/target
+/src-tauri/target/Cargo.lock
+/src-tauri/target/gen
+
