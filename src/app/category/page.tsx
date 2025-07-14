@@ -1,29 +1,20 @@
 "use client";
-import { CategoryPageItem as Kanban } from "@/components/tasks-page/kanban-category/category-page-item";
 import { CategoryPageItem as List } from "@/components/tasks-page/list-category/category-page-item";
 import {
   useViewStore,
 } from "@/utils/providers/view-store-provider";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-
 import { Button } from "@/ui/button";
 import { Menu, MenuItem } from "@mui/material";
 import { viewNames, viewOptions } from "@/utils/consts";
-import { ViewType } from "@/types/types";
 
-const Tasks = ({ view }: { view: ViewType }) => {
+const Tasks = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
   return (
-    <>
-      {view === "kanban" ? (
-        <Kanban id={Number.parseInt(id as string)} />
-      ) : (
-        <List id={Number.parseInt(id as string)} />
-      )}
-    </>
+    <List id={Number.parseInt(id as string)} />
   );
 };
 
@@ -62,7 +53,7 @@ const CategoryPage = () => {
         </Menu>
       </div>
       <Suspense fallback={<div>Загрузка...</div>}>
-      <Tasks view={view} />
+        <Tasks/>
       </Suspense>
     </div>
   );

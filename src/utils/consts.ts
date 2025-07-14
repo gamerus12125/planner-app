@@ -144,6 +144,7 @@ export const filters: FilterType[] = [
     name: "Приоритету ↑",
     key: "priorityUp",
     sortFunction: (tasks: TaskType[]) => {
+      console.log(tasks)
       return tasks.sort((a, b) => {
         const priorityA = a.priority;
         const priorityB = b.priority;
@@ -157,9 +158,11 @@ export const filters: FilterType[] = [
     name: "Приоритету ↓",
     key: "priorityDown",
     sortFunction: (tasks: TaskType[]) => {
+      console.log(tasks)
       return tasks.sort((a, b) => {
         const priorityA = a.priority;
         const priorityB = b.priority;
+        console.log(priorityA, priorityB)
         return (
           priorityNums[priorityB || "low"] - priorityNums[priorityA || "low"]
         );
