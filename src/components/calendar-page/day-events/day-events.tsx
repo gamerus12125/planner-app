@@ -2,13 +2,7 @@
 
 import { DayEventType } from "@/types/types";
 import Database from "@tauri-apps/plugin-sql";
-import {
-  FormEvent,
-  JSX,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, JSX, useEffect, useRef, useState } from "react";
 import { EventDetails } from "../event-details/event-details";
 import {
   Dialog,
@@ -19,7 +13,12 @@ import {
   Select,
 } from "@mui/material";
 import { Input } from "@/ui/input";
-import { days, daysNames, hours, monthsNamesWithDate } from "@/utils/consts";
+import {
+  daysNumbers,
+  hours,
+  numbersToDays,
+  numbersToMonths,
+} from "@/utils/consts";
 import { Button } from "@/ui/button";
 
 export const DayEvents = ({ date }: { date: Date }) => {
@@ -188,8 +187,8 @@ export const DayEvents = ({ date }: { date: Date }) => {
             <h3 className="text-center text-xl underline underline-offset-8">
               {date.getDate()}{" "}
               {
-                monthsNamesWithDate[
-                  date.getMonth().toString() as keyof typeof monthsNamesWithDate
+                numbersToMonths[
+                  date.getMonth().toString() as keyof typeof numbersToMonths
                 ]
               }
             </h3>
@@ -236,7 +235,7 @@ export const DayEvents = ({ date }: { date: Date }) => {
             ? " событие"
             : " связанное событие"}
         </DialogTitle>
-        <DialogContent className="flex flex-col gap-3 bg-[#25283d]">
+        <DialogContent classes={{ root: "flex flex-col gap-3 bg-[#25283d]" }}>
           <Input
             name="name"
             type="text"
@@ -275,9 +274,9 @@ export const DayEvents = ({ date }: { date: Date }) => {
               }}
             >
               <MenuItem value="Не повторять">Не повторять</MenuItem>
-              {days.map((day) => (
+              {daysNumbers.map((day) => (
                 <MenuItem key={day} value={day}>
-                  {daysNames[day as keyof typeof daysNames]}
+                  {numbersToDays[day.toString() as keyof typeof numbersToDays]}
                 </MenuItem>
               ))}
             </Select>
@@ -320,7 +319,7 @@ export const DayEvents = ({ date }: { date: Date }) => {
             Цвет
           </Input>
         </DialogContent>
-        <DialogActions className="bg-[#25283d]">
+        <DialogActions classes={{ root: "bg-[#25283d]" }}>
           <Button type="submit" className="p-2">
             Добавить
           </Button>

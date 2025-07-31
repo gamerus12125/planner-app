@@ -23,7 +23,7 @@ export type TaskType = {
   color?: string;
   orderNumber: number;
   hasDeadline: number;
-  priority?: "high" | "middle" | "low"
+  priority?: "high" | "middle" | "low";
 };
 
 export type CategoryType = {
@@ -31,7 +31,7 @@ export type CategoryType = {
   name: string;
   description?: string;
   color?: string;
-}
+};
 
 export type CategoryColumnType = {
   id: number;
@@ -39,7 +39,7 @@ export type CategoryColumnType = {
   color?: string;
   categoryId: number;
   orderNumber: number;
-}
+};
 
 export type ActionType = {
   id: number;
@@ -51,17 +51,15 @@ export type ActionType = {
   color?: string;
   deadlineDate?: string;
   categoryId?: number;
-}
-
-export type ViewType = "list" | "kanban";
+};
 
 export type FilterType = {
   name: string;
-  key: string
-  sortFunction: (tasks: TaskType[]) => TaskType[]
-}
+  key: string;
+  sortFunction: (tasks: TaskType[]) => TaskType[];
+};
 
 export type PriorityType = {
   name: string;
   key: "high" | "middle" | "low";
-}
+};

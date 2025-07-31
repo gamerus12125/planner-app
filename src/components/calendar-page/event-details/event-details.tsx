@@ -2,7 +2,7 @@ import { DayEventType } from "@/types/types";
 import { Button } from "@/ui/button";
 import { CloseIcon } from "@/ui/close-icon";
 import { Input } from "@/ui/input";
-import { days, daysNames } from "@/utils/consts";
+import { daysNumbers, numbersToDays } from "@/utils/consts";
 import { MenuItem, Select } from "@mui/material";
 import Database from "@tauri-apps/plugin-sql";
 import { memo, useEffect, useState } from "react";
@@ -24,7 +24,8 @@ export const EventDetails = memo(function EventDetails({
 }) {
   const [windowWidth, setWindowWidth] = useState(0);
   const [isRepeat, setIsRepeat] = useState(
-    event?.repeat || [...days, "Не повторять"].includes(event?.repeat || "")
+    event?.repeat ||
+      [...daysNumbers, "Не повторять"].includes(event?.repeat || "")
   );
 
   useEffect(() => {
@@ -81,7 +82,6 @@ export const EventDetails = memo(function EventDetails({
     setIsOpen(false);
   };
 
- 
   return (
     isOpen && (
       <div
@@ -133,14 +133,16 @@ export const EventDetails = memo(function EventDetails({
                 Array.isArray(event?.repeat?.split(",")) &&
                 !event.repeat
                   .split(",")
-                  .map((day) => [...days, "Не повторять"].includes(day))
+                  .map((day) => [...daysNumbers, "Не повторять"].includes(day))
                   .includes(false)
                   ? event.repeat?.split(",")
                   : [
                       Array.isArray(event?.repeat?.split(","))
                         ? "Не повторять"
                         : event.repeat &&
-                          [...days, "Не повторять"].includes(event.repeat)
+                          [...daysNumbers, "Не повторять"].includes(
+                            event.repeat
+                          )
                         ? event.repeat
                         : "Не повторять",
                     ]
@@ -157,9 +159,9 @@ export const EventDetails = memo(function EventDetails({
               }}
             >
               <MenuItem value="Не повторять">Не повторять</MenuItem>
-              {days.map((day) => (
+              {daysNumbers.map((day) => (
                 <MenuItem key={day} value={day}>
-                  {daysNames[day as keyof typeof daysNames]}
+                  {numbersToDays[day.toString() as keyof typeof numbersToDays]}
                 </MenuItem>
               ))}
             </Select>

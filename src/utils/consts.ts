@@ -1,6 +1,6 @@
-import { FilterType, PriorityType, TaskType, ViewType } from "@/types/types";
+import { FilterType, PriorityType, TaskType } from "@/types/types";
 
-export const daysNames = {
+export const numbersToDays = {
   "1": "Понедельник",
   "2": "Вторник",
   "3": "Среда",
@@ -10,9 +10,10 @@ export const daysNames = {
   "0": "Воскресенье",
 };
 
-export const days = Object.keys(daysNames);
+export const daysString = Object.keys(numbersToDays);
+export const daysNumbers = [0, 1, 2, 3, 4, 5, 6];
 
-export const daysNumber = {
+export const daysToNumbers = {
   Понедельник: 1,
   Вторник: 2,
   Среда: 3,
@@ -22,22 +23,7 @@ export const daysNumber = {
   Воскресенье: 0,
 };
 
-export const monthsNamesSingle = {
-    "0": "Январь",
-    "1": "Февраль",
-    "2": "Март",
-    "3": "Апрель",
-    "4": "Май",
-    "5": "Июнь",
-    "6": "Июль",
-    "7": "Август",
-    "8": "Сентябрь",
-    "9": "Октябрь",
-    "10": "Ноябрь",
-    "11": "Декабрь",
-}
-
-export const monthsNamesWithDate = {
+export const numbersToMonths = {
   "0": "Января",
   "1": "Февраля",
   "2": "Марта",
@@ -88,13 +74,6 @@ export const hours = [
   "23:00",
 ];
 
-export const viewOptions: [ViewType, ViewType] = ["list", "kanban"];
-
-export const viewNames = {
-  list: "Список",
-  kanban: "Доска",
-};
-
 export const filters: FilterType[] = [
   {
     name: "Дате создания ↑",
@@ -144,12 +123,13 @@ export const filters: FilterType[] = [
     name: "Приоритету ↑",
     key: "priorityUp",
     sortFunction: (tasks: TaskType[]) => {
-      console.log(tasks)
+      console.log(tasks);
       return tasks.sort((a, b) => {
         const priorityA = a.priority;
         const priorityB = b.priority;
         return (
-          priorityNums[priorityA || "low"] - priorityNums[priorityB || "low"]
+          prioritiesToNums[priorityA || "low"] -
+          prioritiesToNums[priorityB || "low"]
         );
       });
     },
@@ -158,13 +138,14 @@ export const filters: FilterType[] = [
     name: "Приоритету ↓",
     key: "priorityDown",
     sortFunction: (tasks: TaskType[]) => {
-      console.log(tasks)
+      console.log(tasks);
       return tasks.sort((a, b) => {
         const priorityA = a.priority;
         const priorityB = b.priority;
-        console.log(priorityA, priorityB)
+        console.log(priorityA, priorityB);
         return (
-          priorityNums[priorityB || "low"] - priorityNums[priorityA || "low"]
+          prioritiesToNums[priorityB || "low"] -
+          prioritiesToNums[priorityA || "low"]
         );
       });
     },
@@ -186,7 +167,7 @@ export const priorities: PriorityType[] = [
   },
 ];
 
-export const priorityNums = {
+export const prioritiesToNums = {
   high: 2,
   middle: 1,
   low: 0,

@@ -7,8 +7,9 @@ import { TaskType } from "@/types/types";
 import { CategoryTask } from "@/components/tasks-page/categories/category-task";
 import { ArrowLeftIcon } from "@/ui/arrow-left-icon";
 import { ArrowRightIcon } from "@/ui/arrow-right-icon";
-import { monthsNamesSingle } from "@/utils/consts";
+import { daysNumbers, daysToNumbers, numbersToMonths } from "@/utils/consts";
 import { Input } from "@/ui/input";
+import { CalendarItem } from "./calendar-item";
 
 export const Calendar = () => {
   const [tasks, setTasks] = useState<never[] | TaskType[]>([]);
@@ -30,34 +31,19 @@ export const Calendar = () => {
     });
   }, [isChanged, currentDate]);
 
-  const getDates = (month: number) => {
+  const getDates = (year: number, month: number) => {
     const dates = [];
 
-    const date = new Date(new Date().getFullYear(), month, 1);
-
+    const date = new Date(year, month, 1);
     while (date.getMonth() === month) {
       dates.push(new Date(date));
       date.setDate(date.getDate() + 1);
     }
 
-    let firstDay = dates[0].getDay() - 1;
-    if (firstDay === -1) {
-      firstDay = 6;
-    }
-    for (let i = 0; i < firstDay; i++) {
-      dates.unshift(null);
-    }
-
-    const weeks = Array.from(
-      { length: Math.ceil(dates.length / 7) },
-      (_, i) => i + 1
-    );
-
-    return { dates, weeks };
+    return dates;
   };
 
-  const { dates, weeks } = getDates(month);
-  const days = [0, 1, 2, 3, 4, 5, 6];
+  const dates = getDates(year, month);
 
   return (
     <div className="h-screen">
@@ -74,8 +60,8 @@ export const Calendar = () => {
             <div className="flex gap-2 items-center justify-center w-[175px]">
               <p>
                 {
-                  monthsNamesSingle[
-                    month.toString() as keyof typeof monthsNamesSingle
+                  numbersToMonths[
+                    month.toString() as keyof typeof numbersToMonths
                   ]
                 }{" "}
                 {year}
@@ -108,56 +94,26 @@ export const Calendar = () => {
           </div>
           <div className="h-[calc(100vh-368px)]">
             <div className="grid grid-cols-7 h-[30px]">
-              <div className="text-center overflow-hidden">Понедельник</div>
-              <div className="text-center overflow-hidden">Вторник</div>
-              <div className="text-center overflow-hidden">Среда</div>
-              <div className="text-center overflow-hidden">Четверг</div>
-              <div className="text-center overflow-hidden">Пятница</div>
-              <div className="text-center overflow-hidden">Суббота</div>
-              <div className="text-center overflow-hidden">Воскресенье</div>
-            </div>
-            <div className="flex flex-col min-h-[calc(100vh-398px)]">
-              {weeks.map((week) => (
-                <div key={week} className="grid grid-cols-7 flex-1">
-                  {days.map((day) => (
-                    <div
-                      key={dates[(week - 1) * 7 + day]?.getTime() ?? day}
-                      className="h-full min-w-[70px]"
-                    >
-                      {dates[(week - 1) * 7 + day] ? (
-                        <div
-                          onClick={() =>
-                            setCurrentDate(
-                              dates[(week - 1) * 7 + day] || new Date()
-                            )
-                          }
-                          className={`flex justify-center items-center min-h-[50px] h-[90%] w-[90%]
-                            ${
-                              tasks.some(
-                                (task: TaskType) =>
-                                  new Date(
-                                    task.deadlineDate
-                                  ).toLocaleDateString() ===
-                                  dates[
-                                    (week - 1) * 7 + day
-                                  ]?.toLocaleDateString()
-                              )
-                                ? "border-2 border-amber-600"
-                                : ""
-                            }
-                            ${
-                              dates[(week - 1) * 7 + day]?.toDateString() ==
-                              currentDate.toDateString()
-                                ? "bg-[#7D82B8]"
-                                : ""
-                            } hover:bg-[#7D82B8] hover:cursor-pointer transition-all rounded-3xl`}
-                        >
-                          {dates[(week - 1) * 7 + day]?.getDate()}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
+              {Object.keys(daysToNumbers).map((day) => (
+                <div key={day} className="text-center overflow-hidden">
+                  {day}
                 </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 min-h-[calc(100vh-398px)]">
+              {dates.map((date, index) => (
+                <CalendarItem
+                  key={index}
+                  date={date}
+                  index={index}
+                  currentDate={currentDate}
+                  setCurrentDate={setCurrentDate}
+                  hasDeadlineTask={tasks.some(
+                    (task) =>
+                      new Date(task.deadlineDate).toLocaleDateString() ===
+                      date.toLocaleDateString()
+                  )}
+                />
               ))}
             </div>
           </div>
