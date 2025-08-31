@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import { TaskType } from "@/types/types";
-import { Button } from "@/ui/button";
-import { Checkbox } from "@/ui/checkbox";
-import { ClockIcon } from "@/ui/clock-icon";
-import { CrossIcon } from "@/ui/cross-icon";
-import { EditIcon } from "@/ui/edit-icon";
-import { Input } from "@/ui/input";
-import { MoreIcon } from "@/ui/more-icon";
-import { DraggableProvided } from "@hello-pangea/dnd";
+import { TaskType } from '@/types/types';
+import { Button } from '@/ui/button';
+import { Checkbox } from '@/ui/checkbox';
+import { ClockIcon } from '@/ui/clock-icon';
+import { CrossIcon } from '@/ui/cross-icon';
+import { EditIcon } from '@/ui/edit-icon';
+import { Input } from '@/ui/input';
+import { MoreIcon } from '@/ui/more-icon';
+import { priorities } from '@/utils/consts';
+import { formatDateToLocalString } from '@/utils/funcs/formatDateToLocalString';
 import {
   Dialog,
   DialogActions,
@@ -17,23 +18,19 @@ import {
   Menu,
   MenuItem,
   Select,
-} from "@mui/material";
-import Database from "@tauri-apps/plugin-sql";
-import { FormEvent, useState } from "react";
-import { formatDateToLocalString } from "@/utils/formatDateToLocalString";
-import { priorities } from "@/utils/consts";
+} from '@mui/material';
+import Database from '@tauri-apps/plugin-sql';
+import { FormEvent, useState } from 'react';
 
 export const CategoryTask = ({
   task,
   setIsChanged,
-  provided,
   showColor = false,
-  className = "",
+  className = '',
   showDescription = false,
 }: {
   task: TaskType;
   setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
-  provided?: DraggableProvided;
   className?: string;
   showColor?: boolean;
   showDescription?: boolean;
@@ -52,39 +49,37 @@ export const CategoryTask = ({
   };
 
   const checkTask = (id: number) => {
-    Database.load("sqlite:test.db").then((db) => {
+    Database.load('sqlite:test.db').then(db => {
       db.execute(
         `
         UPDATE tasks
         SET isComplete = $1
         WHERE id = $2
       `,
-        [task.isComplete ? 0 : 1, id]
-      ).then((res) => {
+        [task.isComplete ? 0 : 1, id],
+      ).then(res => {
         setIsChanged((prev: boolean) => !prev);
       });
     });
   };
 
   const deleteTask = (id: number) => {
-    Database.load("sqlite:test.db").then((db) => {
-      db.execute("DELETE FROM tasks WHERE id=$1", [id]).then((res) =>
-        setIsChanged((prev) => !prev)
-      );
+    Database.load('sqlite:test.db').then(db => {
+      db.execute('DELETE FROM tasks WHERE id=$1', [id]).then(res => setIsChanged(prev => !prev));
     });
   };
 
   const editTask = (id: number, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name");
-    const date = formData.get("date");
-    const description = formData.get("description");
-    const color = formData.get("color");
-    const hasDeadline = Number.parseInt(formData.get("hasDeadline") as string);
-    const priority = formData.get("priority");
+    const name = formData.get('name');
+    const date = formData.get('date');
+    const description = formData.get('description');
+    const color = formData.get('color');
+    const hasDeadline = Number.parseInt(formData.get('hasDeadline') as string);
+    const priority = formData.get('priority');
     if (!name) return;
-    Database.load("sqlite:test.db").then((db) => {
+    Database.load('sqlite:test.db').then(db => {
       db.execute(
         `
         UPDATE tasks
@@ -93,14 +88,14 @@ export const CategoryTask = ({
       `,
         [
           name,
-          date ? new Date(date?.toString() || "").toISOString() : null,
+          date ? new Date(date?.toString() || '').toISOString() : null,
           description,
-          color === "#000000" ? null : color,
+          color === '#000000' ? null : color,
           hasDeadline,
           priority,
           id,
-        ]
-      ).then((res) => {
+        ],
+      ).then(res => {
         setIsChanged((prev: boolean) => !prev);
       });
     });
@@ -110,52 +105,33 @@ export const CategoryTask = ({
     <>
       <div
         className={`rounded-[12px] group ${
-          !showDescription
-            ? "flex justify-between gap-2 items-center ".concat(className)
-            : ""
-        }`}
-      >
+          showDescription && 'flex justify-between gap-2 items-center '.concat(className)
+        }`}>
         {showColor && (
           <div
             className="w-[15px] h-[50px] rounded-l-[10px]"
-            style={{ backgroundColor: task.color }}
-          ></div>
+            style={{ backgroundColor: task.color }}></div>
         )}
-        <p
-          {...provided?.dragHandleProps}
-          className="overflow-hidden border-b-2 border-[#7D82B8] max-w-[140px]"
-        >
-          {task.name}
-        </p>
+        <p className="overflow-hidden border-b-2 border-[#7D82B8] max-w-[140px]">{task.name}</p>
         <div onClick={() => checkTask(task.id)} className="cursor-pointer">
           <span
             className={`flex items-center p-1 rounded-md ${
               task.isComplete
-                ? " bg-[#5E8C61] "
+                ? ' bg-[#5E8C61] '
                 : task.hasDeadline
-                ? new Date(task.deadlineDate).getTime() >= Date.now()
-                  ? new Date(task.deadlineDate).toDateString() ===
-                    new Date().toDateString()
-                    ? "border-2 border-[#FBB13C]"
-                    : "border-2 border-[#5E8C61]"
-                  : "bg-[#8F2D56]"
-                : ""
-            }`}
-          >
+                  ? new Date(task.deadlineDate).getTime() >= Date.now()
+                    ? new Date(task.deadlineDate).toDateString() === new Date().toDateString()
+                      ? 'border-2 border-[#FBB13C]'
+                      : 'border-2 border-[#5E8C61]'
+                    : 'bg-[#8F2D56]'
+                  : ''
+            }`}>
             <Checkbox
               checked={Boolean(task.isComplete)}
-              className={`group-hover:block ${
-                task.hasDeadline ? "hidden" : ""
-              }`}
+              className={`group-hover:block ${task.hasDeadline && 'hidden'}`}
             />
-            {task.hasDeadline ? (
-              <ClockIcon className="group-hover:hidden" />
-            ) : (
-              ""
-            )}
-            {task.hasDeadline
-              ? new Date(task.deadlineDate).toLocaleString().slice(0, 17)
-              : ""}
+            {task.hasDeadline && <ClockIcon className="group-hover:hidden" />}
+            {task.hasDeadline && new Date(task.deadlineDate).toLocaleString().slice(0, 17)}
           </span>
         </div>
         <Button type="button" onClick={handleClick} className="border-none">
@@ -171,8 +147,7 @@ export const CategoryTask = ({
                     deleteTask(task.id);
                   }
                 : undefined
-            }
-          >
+            }>
             <CrossIcon className="w-[24px] h-[24px]" /> Удалить
           </MenuItem>
           <MenuItem
@@ -180,25 +155,23 @@ export const CategoryTask = ({
             onClick={() => {
               handleClose();
               setIsEditingTask(true);
-            }}
-          >
+            }}>
             <EditIcon /> Редактировать
           </MenuItem>
         </Menu>
         <Dialog
           open={isEditingTask}
           onClose={() => setIsEditingTask(false)}
-          PaperProps={{
-            component: "form",
-            onSubmit: (e: FormEvent<HTMLFormElement>) => {
-              editTask?.(task.id, e);
-              setIsEditingTask(false);
+          slotProps={{
+            paper: {
+              component: 'form',
+              onSubmit: (e: FormEvent<HTMLFormElement>) => {
+                editTask?.(task.id, e);
+                setIsEditingTask(false);
+              },
             },
-          }}
-        >
-          <DialogTitle className="bg-[#25283d]">
-            Редактирование задачи
-          </DialogTitle>
+          }}>
+          <DialogTitle className="bg-[#25283d]">Редактирование задачи</DialogTitle>
           <DialogContent className="flex flex-col gap-3 bg-[#25283d]">
             <Input
               name="name"
@@ -206,8 +179,7 @@ export const CategoryTask = ({
               placeholder={task.name}
               type="text"
               defaultValue={task.name}
-              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none"
-            >
+              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
               Название задачи
             </Input>
             <Input
@@ -218,8 +190,7 @@ export const CategoryTask = ({
               onClick={() => {
                 setHasDeadline(!hasDeadline);
               }}
-              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none"
-            >
+              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
               Есть крайний срок
             </Input>
             {hasDeadline && (
@@ -233,8 +204,7 @@ export const CategoryTask = ({
                     : new Date().toISOString().slice(0, 16)
                 }
                 required={true}
-                className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none"
-              >
+                className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
                 Дата крайнего срока
               </Input>
             )}
@@ -245,22 +215,20 @@ export const CategoryTask = ({
               type="text"
               placeholder={task.description}
               defaultValue={task.description}
-              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none"
-            >
+              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
               Описание задачи
             </Input>
             <Input
               name="color"
               id="color"
               type="color"
-              defaultValue={task.color ? task.color : ""}
-              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none"
-            >
+              defaultValue={task.color}
+              className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
               Цвет задачи
             </Input>
             <label htmlFor="priority">Приоритет</label>
             <Select id="priority" name="priority" defaultValue={task.priority}>
-              {priorities.map((priority) => (
+              {priorities.map(priority => (
                 <MenuItem key={priority.key} value={priority.key}>
                   {priority.name}
                 </MenuItem>
@@ -281,16 +249,15 @@ export const CategoryTask = ({
             <Button
               type="button"
               className={`border-none p-1 focus:outline-none text-center text-[16px] h-[30px] w-[30px] ${
-                showTaskDescription ? "rotate-90" : ""
+                showTaskDescription ? 'rotate-90' : ''
               }`}
-              onClick={() => setShowTaskDescription((prev) => !prev)}
-            >
+              onClick={() => setShowTaskDescription(prev => !prev)}>
               ❯
             </Button>
             {showTaskDescription && (
               <div className="p-2 bg-[#25283d] ">
                 <p className="text-[#E0C1B3]">
-                  {task.description ? task.description : "Нет описания"}
+                  {task.description ? task.description : 'Нет описания'}
                 </p>
               </div>
             )}

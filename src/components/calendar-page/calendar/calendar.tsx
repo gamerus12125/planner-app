@@ -1,31 +1,31 @@
-"use client";
-import { useYear } from "@/hooks/useYear";
-import { useEffect, useState } from "react";
-import { DayEvents } from "../day-events/day-events";
-import Database from "@tauri-apps/plugin-sql";
-import { TaskType } from "@/types/types";
-import { CategoryTask } from "@/components/tasks-page/categories/category-task";
-import { ArrowLeftIcon } from "@/ui/arrow-left-icon";
-import { ArrowRightIcon } from "@/ui/arrow-right-icon";
-import { daysNumbers, daysToNumbers, numbersToMonths } from "@/utils/consts";
-import { Input } from "@/ui/input";
-import { CalendarItem } from "./calendar-item";
+'use client';
+import { CategoryTask } from '@/components/tasks-page/categories/category-task';
+import { useYear } from '@/hooks/useYear';
+import { TaskType } from '@/types/types';
+import { ArrowLeftIcon } from '@/ui/arrow-left-icon';
+import { ArrowRightIcon } from '@/ui/arrow-right-icon';
+import { Input } from '@/ui/input';
+import { daysToNumbers, numbersToMonths } from '@/utils/consts';
+import Database from '@tauri-apps/plugin-sql';
+import { useEffect, useState } from 'react';
+import { DayEvents } from '../day-events/day-events';
+import { CalendarItem } from './calendar-item';
 
 export const Calendar = () => {
   const [tasks, setTasks] = useState<never[] | TaskType[]>([]);
   const [isChanged, setIsChanged] = useState(false);
   const { month, year, decrementMonth, incrementMonth, setDate } = useYear(
     new Date().getFullYear(),
-    new Date().getMonth()
+    new Date().getMonth(),
   );
   const [currentDate, setCurrentDate] = useState(new Date());
   useEffect(() => {
-    Database.load("sqlite:test.db").then((db) => {
+    Database.load('sqlite:test.db').then(db => {
       db.select(`SELECT * FROM tasks`)
         .then((res: any) => {
           setTasks(res);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     });
@@ -48,23 +48,17 @@ export const Calendar = () => {
   return (
     <div className="h-screen">
       <DayEvents date={currentDate} />
-      <div className={"grid grid-cols-[1fr_max-content]"}>
+      <div className={'grid grid-cols-[1fr_max-content]'}>
         <div className="flex flex-col h-[calc(100vh-332px)]">
           <div className="flex gap-5 justify-center items-center h-[40px]">
             <button
               onClick={() => decrementMonth()}
-              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all"
-            >
+              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
               <ArrowLeftIcon className="w-[30px] h-[30px]" />
             </button>
             <div className="flex gap-2 items-center justify-center w-[175px]">
               <p>
-                {
-                  numbersToMonths[
-                    month.toString() as keyof typeof numbersToMonths
-                  ]
-                }{" "}
-                {year}
+                {numbersToMonths[month.toString() as keyof typeof numbersToMonths]} {year}
               </p>
               <Input
                 className="w-[30px] h-[30px] !p-0 text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')] selection:bg-transparent selection:text-transparent focus:bg-transparent focus:text-transparent"
@@ -73,13 +67,13 @@ export const Calendar = () => {
                 type="date"
                 value={new Date(year, month, currentDate.getDate())
                   .toLocaleDateString()
-                  .split(".")
+                  .split('.')
                   .reverse()
-                  .join("-")}
-                onChange={(e) => {
+                  .join('-')}
+                onChange={e => {
                   setDate(
                     new Date(e.target.value).getFullYear(),
-                    new Date(e.target.value).getMonth()
+                    new Date(e.target.value).getMonth(),
                   );
                   setCurrentDate(new Date(e.target.value));
                 }}
@@ -87,14 +81,13 @@ export const Calendar = () => {
             </div>
             <button
               onClick={() => incrementMonth()}
-              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all"
-            >
+              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
               <ArrowRightIcon className="w-[30px] h-[30px]" />
             </button>
           </div>
           <div className="h-[calc(100vh-368px)]">
             <div className="grid grid-cols-7 h-[30px]">
-              {Object.keys(daysToNumbers).map((day) => (
+              {Object.keys(daysToNumbers).map(day => (
                 <div key={day} className="text-center overflow-hidden">
                   {day}
                 </div>
@@ -105,13 +98,12 @@ export const Calendar = () => {
                 <CalendarItem
                   key={index}
                   date={date}
-                  index={index}
                   currentDate={currentDate}
                   setCurrentDate={setCurrentDate}
                   hasDeadlineTask={tasks.some(
-                    (task) =>
+                    task =>
                       new Date(task.deadlineDate).toLocaleDateString() ===
-                      date.toLocaleDateString()
+                      date.toLocaleDateString(),
                   )}
                 />
               ))}
@@ -121,37 +113,35 @@ export const Calendar = () => {
         <div className="border-2 rounded-xl p-2 flex flex-col gap-2 w-[21vw]">
           <p className="text-center">Задачи на этот день:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length
-              ? tasks
-                  .filter(
-                    (task: TaskType) =>
-                      new Date(task.deadlineDate).toLocaleDateString() ===
-                      currentDate.toLocaleDateString()
-                  )
-                  .map((task) => (
-                    <CategoryTask
-                      setIsChanged={setIsChanged}
-                      task={task}
-                      key={task.id}
-                      className="border-2 p-2"
-                    />
-                  ))
-              : ""}
+            {tasks.length &&
+              tasks
+                .filter(
+                  (task: TaskType) =>
+                    new Date(task.deadlineDate).toLocaleDateString() ===
+                    currentDate.toLocaleDateString(),
+                )
+                .map(task => (
+                  <CategoryTask
+                    setIsChanged={setIsChanged}
+                    task={task}
+                    key={task.id}
+                    className="border-2 p-2"
+                  />
+                ))}
           </ul>
           <p className="text-center">Задачи без срока:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length
-              ? tasks
-                  .filter((task: TaskType) => !task.hasDeadline)
-                  .map((task) => (
-                    <CategoryTask
-                      setIsChanged={setIsChanged}
-                      task={task}
-                      key={task.id}
-                      className="border-2 p-2"
-                    />
-                  ))
-              : ""}
+            {tasks.length &&
+              tasks
+                .filter((task: TaskType) => !task.hasDeadline)
+                .map(task => (
+                  <CategoryTask
+                    setIsChanged={setIsChanged}
+                    task={task}
+                    key={task.id}
+                    className="border-2 p-2"
+                  />
+                ))}
           </ul>
         </div>
       </div>

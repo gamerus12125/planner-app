@@ -1,7 +1,7 @@
 "use client";
 
 import { Categories } from "@/components/tasks-page/categories/categories";
-import { checkTable } from "@/utils/check-table";
+import { checkTable } from "@/utils/funcs/check-table";
 import Database from "@tauri-apps/plugin-sql";
 import { useEffect } from "react";
 
@@ -29,7 +29,7 @@ const createColumnsTable = (db: Database) => {
 
 const createEventsTable = (db: Database) => {
   db.execute(
-    "CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, date TEXT, start REAL, end REAL, color TEXT, description TEXT, type TEXT NOT NULL, rootEventId INTEGER, repeat TEXT)"
+    "CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, date TEXT, start REAL, end REAL, color TEXT, description TEXT, rootEventId INTEGER, repeat TEXT)"
   )
 }
 
@@ -62,7 +62,6 @@ const CategoriesPage = () => {
         "date",
         "color",
         "description",
-        "type",
         "repeat",
       ];
       ints = ["id", "rootEventId"];
