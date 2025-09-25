@@ -125,7 +125,7 @@ export const Calendar = () => {
                     setIsChanged={setIsChanged}
                     task={task}
                     key={task.id}
-                    className="border-2 p-2"
+                    className="flex border-2 p-2"
                   />
                 ))}
           </ul>
@@ -139,7 +139,7 @@ export const Calendar = () => {
                     setIsChanged={setIsChanged}
                     task={task}
                     key={task.id}
-                    className="border-2 p-2"
+                    className="flex border-2 p-2"
                   />
                 ))}
           </ul>

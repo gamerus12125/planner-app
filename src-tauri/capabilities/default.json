@@ -7,11 +7,11 @@
   ],
   "permissions": [
     "core:default",
-    "shell:allow-open",
     "sql:default",
     "sql:allow-load",
     "sql:allow-execute",
     "sql:allow-close",
-    "sql:allow-select"
+    "sql:allow-select",
+    "opener:default"
   ]
 }

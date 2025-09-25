@@ -103,10 +103,7 @@ export const CategoryTask = ({
 
   return (
     <>
-      <div
-        className={`rounded-[12px] group ${
-          showDescription && 'flex justify-between gap-2 items-center '.concat(className)
-        }`}>
+      <div className={`rounded-[12px] group ${className}`}>
         {showColor && (
           <div
             className="w-[15px] h-[50px] rounded-l-[10px]"
