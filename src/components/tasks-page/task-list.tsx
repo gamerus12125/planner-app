@@ -7,9 +7,10 @@ import { filters } from '@/utils/consts';
 import { Menu, MenuItem } from '@mui/material';
 import Database from '@tauri-apps/plugin-sql';
 import { useEffect, useState } from 'react';
-import { CategoryTask } from '../categories/category-task';
+import { AddTaskButton } from './add-task-button';
+import { TaskItem } from './task-item';
 
-export const CategoryPageItem = ({ id }: { id: number }) => {
+export const TaskList = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [changed, toggleChanged] = useState(false);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
@@ -19,34 +20,17 @@ export const CategoryPageItem = ({ id }: { id: number }) => {
 
   useEffect(() => {
     Database.load('sqlite:test.db').then(db => {
-      db.select('SELECT * FROM tasks WHERE categoryId = $1', [id]).then((res: any) => {
+      db.select('SELECT * FROM tasks').then((res: any) => {
         setTasks(res);
       });
     });
-  }, [changed, id]);
-
-  const createTask = () => {
-    Database.load('sqlite:test.db').then(db => {
-      db.execute(
-        'INSERT INTO tasks (name, categoryId, orderNumber, isComplete, creationDate) SELECT $1, $2, COALESCE(MAX(orderNumber), 0) + 1, $3, $4 FROM tasks',
-        ['Новая задача', id, 0, new Date().toISOString()],
-      ).then(res => {
-        toggleChanged(prev => !prev);
-      });
-    });
-  };
-
-  const handleClose = () => {
-    setIsFilterMenuOpen(false);
-  };
+  }, [changed]);
 
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-center text-2xl mt-[20px]">Список задач</h1>
       <div className="flex gap-2 p-2 border-[#7D82B8] border-2 rounded-xl mt-[50px]">
-        <Button className="p-2" onClick={createTask}>
-          Добавить задачу
-        </Button>
+        <AddTaskButton toggleChanged={toggleChanged} />
         <Button
           type="button"
           onClick={e => {
@@ -73,23 +57,22 @@ export const CategoryPageItem = ({ id }: { id: number }) => {
             )
             .map(task => (
               <li key={task.id}>
-                <CategoryTask
-                  className="flex gap-2 p-2 justify-start border-2 border-[#7D82B8] flex-wrap"
+                <TaskItem
+                  className="border-2 border-[#7D82B8]"
                   key={task.id}
                   task={task}
                   setIsChanged={toggleChanged}
-                  showColor={false}
                 />
               </li>
             ))}
         </ul>
       </div>
-      <Menu anchorEl={anchorEl} open={isFilterMenuOpen} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={isFilterMenuOpen}>
         {filters.map(filter => (
           <MenuItem
             key={filter.key}
             onClick={() => {
-              handleClose();
+              setIsFilterMenuOpen(false);
               setFilter(filter);
             }}>
             {filter.name}
@@ -97,7 +80,7 @@ export const CategoryPageItem = ({ id }: { id: number }) => {
         ))}
         <MenuItem
           onClick={() => {
-            handleClose();
+            setIsFilterMenuOpen(false);
             setFilter(undefined);
           }}>
           Сбросить

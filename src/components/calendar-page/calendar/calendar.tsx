@@ -1,5 +1,5 @@
 'use client';
-import { CategoryTask } from '@/components/tasks-page/categories/category-task';
+import { TaskItem } from '@/components/tasks-page/task-item';
 import { useYear } from '@/hooks/useYear';
 import { TaskType } from '@/types/types';
 import { ArrowLeftIcon } from '@/ui/arrow-left-icon';
@@ -120,28 +120,14 @@ export const Calendar = () => {
                     new Date(task.deadlineDate).toLocaleDateString() ===
                     currentDate.toLocaleDateString(),
                 )
-                .map(task => (
-                  <CategoryTask
-                    setIsChanged={setIsChanged}
-                    task={task}
-                    key={task.id}
-                    className="flex border-2 p-2"
-                  />
-                ))}
+                .map(task => <TaskItem setIsChanged={setIsChanged} task={task} key={task.id} />)}
           </ul>
           <p className="text-center">Задачи без срока:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
             {tasks.length &&
               tasks
                 .filter((task: TaskType) => !task.hasDeadline)
-                .map(task => (
-                  <CategoryTask
-                    setIsChanged={setIsChanged}
-                    task={task}
-                    key={task.id}
-                    className="flex border-2 p-2"
-                  />
-                ))}
+                .map(task => <TaskItem setIsChanged={setIsChanged} task={task} key={task.id} />)}
           </ul>
         </div>
       </div>

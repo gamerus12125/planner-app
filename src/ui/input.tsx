@@ -1,5 +1,5 @@
-import { ChangeEvent, useRef, useState } from "react";
-import { Checkbox } from "./checkbox";
+import { ChangeEvent } from 'react';
+import { Checkbox } from './checkbox';
 
 export const Input = ({
   className,
@@ -25,13 +25,13 @@ export const Input = ({
   children?: React.ReactNode;
   required?: boolean;
   defaultValue?: string | number;
-  positioning?: "horizontal" | "vertical";
+  positioning?: 'horizontal' | 'vertical';
   divClassName?: string;
   value?: string | number;
   onClick?: (
     e:
       | React.MouseEvent<HTMLDivElement, MouseEvent>
-      | React.MouseEvent<HTMLInputElement, MouseEvent>
+      | React.MouseEvent<HTMLInputElement, MouseEvent>,
   ) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   min?: number;
@@ -41,29 +41,42 @@ export const Input = ({
       {children ? (
         <div
           className={`flex ${
-            positioning === "vertical" ? "flex-col" : "flex-row"
+            positioning === 'vertical' ? 'flex-col' : 'flex-row'
           } items-center gap-3 justify-between ${divClassName}`}
-          onClick={onClick}
-        >
+          onClick={onClick}>
           <label className="text-white" htmlFor={id}>
             {children}
           </label>
-          {type === "checkbox" && <Checkbox checked={Boolean(value)} />}
-          <input
-            required={required}
-            type={type}
-            id={id}
-            name={name}
-            value={value}
-            checked={value ? Boolean(value) : undefined}
-            defaultValue={defaultValue}
-            placeholder={placeholder}
-            min={min}
-            className={`p-2 bg-[#25283d] text-white rounded-lg transition-all ${className} ${
-              type === "checkbox" && "opacity-0 w-0 h-0"
-            }`}
-            onChange={onChange}
-          />
+          {type === 'checkbox' ? (
+            <>
+              <Checkbox checked={Boolean(value)} />{' '}
+              <input
+                required={required}
+                type={type}
+                id={id}
+                name={name}
+                checked={type === 'checkbox' && Boolean(value)}
+                defaultValue={defaultValue}
+                placeholder={placeholder}
+                min={min}
+                className={`opacity-0 w-0 h-0 ${className}`}
+                onChange={() => {}}
+              />
+            </>
+          ) : (
+            <input
+              required={required}
+              type={type}
+              id={id}
+              name={name}
+              value={value}
+              defaultValue={defaultValue}
+              placeholder={placeholder}
+              min={min}
+              className={`p-2 bg-[#25283d] text-white rounded-lg transition-all ${className}`}
+              onChange={onChange}
+            />
+          )}
         </div>
       ) : (
         <input
