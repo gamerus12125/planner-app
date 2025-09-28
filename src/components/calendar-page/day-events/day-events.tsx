@@ -42,7 +42,7 @@ export const DayEvents = ({ date }: { date: Date }) => {
       const width = 60 + 9;
       const top = 32 * row + 20 + 44 + 16 + 24 + 5;
 
-      const left = (event.start / 60) * width + 36;
+      const left = (event.start / 60) * width + 34;
       const eventWidth = (Math.floor(event.end - event.start) / 60) * width;
 
       res.push(
