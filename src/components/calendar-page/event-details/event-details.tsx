@@ -5,8 +5,8 @@ import { Input } from '@/ui/input';
 import { daysString, numbersToDays } from '@/utils/consts';
 import { fromInputToNumberTime } from '@/utils/funcs/fromInputToNumberTime';
 import { fromNumberToInputTime } from '@/utils/funcs/fromNumberToInputTime';
+import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { MenuItem, Select } from '@mui/material';
-import Database from '@tauri-apps/plugin-sql';
 import { useEffect, useState } from 'react';
 
 export const EventDetails = ({
@@ -14,25 +14,24 @@ export const EventDetails = ({
   setIsOpen,
   x,
   y,
-  setIsChanged,
 }: {
   event: DayEventType;
   setIsOpen: Function;
   x: number;
   y: number;
-  setIsChanged: Function;
 }) => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [isRepeat, setIsRepeat] = useState(event?.repeat || false);
+  const { editEvent, removeEvent } = useEventsStore(state => state);
 
   useEffect(() => {
     setWindowWidth(document.documentElement.clientWidth);
   }, [event]);
 
   const handleClose = (formData: FormData) => {
-    const name = formData.get('name');
-    const description = formData.get('description');
-    const color = formData.get('color');
+    const name = formData.get('name')?.toString();
+    const description = formData.get('description')?.toString();
+    const color = formData.get('color')?.toString();
     const start = fromInputToNumberTime(formData.get('start') as string);
     const end = fromInputToNumberTime(formData.get('end') as string);
     const raw_date = formData.get('date')?.toString();
@@ -41,35 +40,12 @@ export const EventDetails = ({
     if (!name || !start || !end || (!isRepeat && !raw_date)) return;
     const date = new Date(raw_date || '').toLocaleDateString();
 
-    Database.load('sqlite:test.db')
-      .then(db => {
-        db.execute(
-          `UPDATE events SET name = $1, start = $2, end = $3, color = $4, description = $5, repeat = $6, date = $7 WHERE id = $8`,
-          [
-            name,
-            start,
-            end,
-            color,
-            description,
-            isRepeat ? repeat : null,
-            isRepeat ? null : date,
-            event?.id,
-          ],
-        );
-      })
-      .then(() => {
-        setIsChanged((prev: boolean) => !prev);
-      })
-      .catch(err => console.log(err));
+    editEvent({ ...event, name, description, color, start, end, repeat, date });
     setIsOpen(false);
   };
 
   const handleDelete = () => {
-    Database.load('sqlite:test.db')
-      .then(db => {
-        db.execute(`DELETE FROM events WHERE id = $1`, [event?.id]);
-      })
-      .then(() => setIsChanged((prev: boolean) => !prev));
+    removeEvent(event.id);
     setIsOpen(false);
   };
 

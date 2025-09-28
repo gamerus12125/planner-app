@@ -1,40 +1,35 @@
 'use client';
 import { DayEventType } from '@/types/types';
 import { hours, numbersToMonths } from '@/utils/consts';
-import Database from '@tauri-apps/plugin-sql';
+import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { JSX, useEffect, useRef, useState } from 'react';
 import { EventDetails } from '../event-details/event-details';
 import { AddEventButton } from './add-event-button';
+import { ShowEventsListButton } from './show-events-list-button';
 
 export const DayEvents = ({ date }: { date: Date }) => {
-  const [events, setEvents] = useState<never[] | DayEventType[]>([]);
+  const { events } = useEventsStore(state => state);
+
+  const currentEvents = events?.filter(
+    event =>
+      new Date(event.date || '').toDateString() === date.toDateString() ||
+      event.repeat?.includes(date.getDay().toString()),
+  );
   const [isOpenDetails, setIsOpenDetails] = useState<DayEventType | undefined>();
   const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [isChanged, setIsChanged] = useState(false);
 
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsOpenDetails(undefined);
-    Database.load('sqlite:test.db').then(db => {
-      db.select(`SELECT * FROM events WHERE date = $1 OR repeat LIKE '%${date.getDay()}%'`, [
-        date.toLocaleDateString(),
-      ])
-        .then((res: any) => {
-          setEvents(res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
-  }, [date, isChanged]);
+  }, [date]);
 
   const rows = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   const renderEvents = () => {
     const res: JSX.Element[] = [];
 
-    events.forEach(event => {
+    currentEvents?.forEach(event => {
       if (!event || !container.current) return;
       const start = Math.floor(event.start / 60);
       const end = Math.ceil(event.end / 60);
@@ -85,7 +80,8 @@ export const DayEvents = ({ date }: { date: Date }) => {
               {date.getDate()}{' '}
               {numbersToMonths[date.getMonth().toString() as keyof typeof numbersToMonths]}
             </h3>
-            <AddEventButton setIsChanged={setIsChanged} />
+            <AddEventButton />
+            <ShowEventsListButton />
           </div>
           <div className="flex gap-[60px] relative top-0">
             {hours.map(hour => (
@@ -106,7 +102,6 @@ export const DayEvents = ({ date }: { date: Date }) => {
           setIsOpen={setIsOpenDetails}
           x={coords.x}
           y={coords.y}
-          setIsChanged={setIsChanged}
         />
       )}
     </>
