@@ -15,7 +15,7 @@ export const AddEventButton = ({
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
 
-  const createStandardEvent = (formData: FormData) => {
+  const createEvent = (formData: FormData) => {
     const name = formData.get('name');
     const description = formData.get('description');
     const color = formData.get('color');
@@ -39,7 +39,7 @@ export const AddEventButton = ({
         );
       })
       .then(res => {
-        setIsOpenForm(false);
+        closeForm();
         setIsChanged(prev => !prev);
       })
       .catch(error => {
@@ -47,10 +47,15 @@ export const AddEventButton = ({
       });
   };
 
+  const closeForm = () => {
+    setIsOpenForm(false);
+    setIsRepeat(false);
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    createStandardEvent(formData);
+    createEvent(formData);
   };
   return (
     <>
@@ -140,7 +145,7 @@ export const AddEventButton = ({
           <Button type="submit" className="p-2">
             Добавить
           </Button>
-          <Button onClick={() => setIsOpenForm(false)} className="p-2">
+          <Button onClick={() => closeForm()} className="p-2">
             Отмена
           </Button>
         </DialogActions>
