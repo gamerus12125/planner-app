@@ -5,7 +5,8 @@ import { Provider } from '@/utils/providers/provider';
 import { defaultWindowIcon } from '@tauri-apps/api/app';
 import { Menu } from '@tauri-apps/api/menu';
 import { TrayIcon, TrayIconOptions } from '@tauri-apps/api/tray';
-import { getAllWindows } from '@tauri-apps/api/window';
+import { getAllWindows, getCurrentWindow } from '@tauri-apps/api/window';
+import { exit } from '@tauri-apps/plugin-process';
 import Database from '@tauri-apps/plugin-sql';
 import { Inter } from 'next/font/google';
 import { useEffect } from 'react';
@@ -63,10 +64,7 @@ export default function RootLayout({
             id: 'quit',
             text: 'Выход',
             action: async () => {
-              const windows = await getAllWindows();
-              for (const window of windows) {
-                await window.close();
-              }
+              await exit(0);
             },
           },
         ],
@@ -78,7 +76,14 @@ export default function RootLayout({
       };
       const tray = await TrayIcon.new(options);
     };
+
     createTray();
+
+    const window = getCurrentWindow();
+    window.onCloseRequested(async e => {
+      e.preventDefault();
+      await window.hide();
+    });
   }, []);
   return (
     <html lang="ru">

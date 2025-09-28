@@ -16,6 +16,7 @@
     "@reactuses/core": "^6.1.0",
     "@tauri-apps/api": "^2.8.0",
     "@tauri-apps/plugin-opener": "~2",
+    "@tauri-apps/plugin-process": "~2",
     "@tauri-apps/plugin-sql": "~2",
     "next": "^15.5.4",
     "react": "^19.1.1",

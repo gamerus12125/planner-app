@@ -75,8 +75,8 @@ export const DayEvents = ({ date }: { date: Date }) => {
         ref={container}
         className="border-2 px-[30px] overflow-y-auto relative h-[250px] w-full mb-8 p-6">
         <div>
-          <div className="flex gap-[100px] items-center mb-4">
-            <h3 className="text-center text-xl underline underline-offset-8">
+          <div className="flex gap-[50px] items-center mb-4">
+            <h3 className="text-center text-xl underline underline-offset-8 whitespace-nowrap">
               {date.getDate()}{' '}
               {numbersToMonths[date.getMonth().toString() as keyof typeof numbersToMonths]}
             </h3>

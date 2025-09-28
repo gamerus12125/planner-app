@@ -41,7 +41,7 @@ export const AddEventButton = ({}: {}) => {
   };
   return (
     <>
-      <Button className="p-2" onClick={() => setIsOpenForm(true)}>
+      <Button className="p-2 whitespace-nowrap" onClick={() => setIsOpenForm(true)}>
         Добавить событие
       </Button>
       <Dialog

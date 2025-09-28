@@ -13,7 +13,7 @@ export const ShowEventsListButton = ({}: {}) => {
   return (
     <>
       <Button
-        className="p-2"
+        className="p-2 max-h-[60px] whitespace-nowrap"
         onClick={() => {
           setIsOpenForm(true);
         }}>
