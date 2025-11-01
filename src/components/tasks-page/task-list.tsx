@@ -28,7 +28,8 @@ export const TaskList = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-center text-2xl mt-[20px]">Список задач</h1>
+      <h1 className="text-center text-2xl mt-5">Список задач</h1>
+
       <div className="flex gap-2 p-2 border-[#7D82B8] border-2 rounded-xl mt-[50px]">
         <AddTaskButton toggleChanged={toggleChanged} />
         <Button

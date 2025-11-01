@@ -14,11 +14,13 @@ import { CalendarItem } from './calendar-item';
 export const Calendar = () => {
   const [tasks, setTasks] = useState<never[] | TaskType[]>([]);
   const [isChanged, setIsChanged] = useState(false);
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const { month, year, decrementMonth, incrementMonth, setDate } = useYear(
     new Date().getFullYear(),
     new Date().getMonth(),
   );
-  const [currentDate, setCurrentDate] = useState(new Date());
+
   useEffect(() => {
     Database.load('sqlite:test.db').then(db => {
       db.select(`SELECT * FROM tasks`)
@@ -29,7 +31,7 @@ export const Calendar = () => {
           console.log(error);
         });
     });
-  }, [isChanged, currentDate]);
+  }, [isChanged]);
 
   const getDates = (year: number, month: number) => {
     const dates = [];
@@ -50,7 +52,7 @@ export const Calendar = () => {
       <DayEvents date={currentDate} />
       <div className={'grid grid-cols-[1fr_max-content]'}>
         <div className="flex flex-col h-[calc(100vh-332px)]">
-          <div className="flex gap-5 justify-center items-center h-[40px]">
+          <div className="flex gap-5 justify-center items-center h-10">
             <button
               onClick={() => decrementMonth()}
               className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
@@ -61,7 +63,7 @@ export const Calendar = () => {
                 {numbersToMonths[month.toString() as keyof typeof numbersToMonths]} {year}
               </p>
               <Input
-                className="w-[30px] h-[30px] !p-0 text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')] selection:bg-transparent selection:text-transparent focus:bg-transparent focus:text-transparent"
+                className="w-[30px] h-[30px] p-0! text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')] selection:bg-transparent selection:text-transparent focus:bg-transparent focus:text-transparent"
                 name="date"
                 id="date"
                 type="date"
@@ -113,7 +115,7 @@ export const Calendar = () => {
         <div className="border-2 rounded-xl p-2 flex flex-col gap-2 w-[21vw]">
           <p className="text-center">Задачи на этот день:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length &&
+            {tasks.length > 0 &&
               tasks
                 .filter(
                   (task: TaskType) =>
@@ -124,7 +126,7 @@ export const Calendar = () => {
           </ul>
           <p className="text-center">Задачи без срока:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length &&
+            {tasks.length > 0 &&
               tasks
                 .filter((task: TaskType) => !task.hasDeadline)
                 .map(task => <TaskItem setIsChanged={setIsChanged} task={task} key={task.id} />)}

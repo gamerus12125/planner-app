@@ -99,7 +99,7 @@ export const TaskItem = ({
 
   return (
     <>
-      <div className={`rounded-[12px] flex gap-2 items-center border-2 ${className}`}>
+      <div className={`rounded-xl p-2 flex gap-2 items-center border-2 ${className}`}>
         {task.color && (
           <div
             className="w-[15px] rounded-l-[10px]"
