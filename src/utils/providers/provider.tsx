@@ -1,6 +1,7 @@
 'use client';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { EventsStoreProvider } from './events-store-provider';
+import { TasksStoreProvider } from './tasks-store-provider';
 
 const darkTheme = createTheme({
   palette: {
@@ -10,8 +11,10 @@ const darkTheme = createTheme({
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <EventsStoreProvider>
-      <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
-    </EventsStoreProvider>
+    <TasksStoreProvider>
+      <EventsStoreProvider>
+        <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+      </EventsStoreProvider>
+    </TasksStoreProvider>
   );
 };

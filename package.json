@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "tauri": "export NO_STRIP=true && export __NV_DISABLE_EXPLICIT_SYNC=1 && export WEBKIT_DISABLE_COMPOSITING_MODE=1 && tauri"
   },
   "dependencies": {

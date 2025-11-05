@@ -1,21 +1,26 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
-  background-color: #25283D;
+  background-color: #25283d;
   color: #fff;
 }
 
-input[type="date"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  
-}
+@layer components {
+  .calendar-input {
+    @apply appearance-none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  background: none;
-  width: 30px;
-  height: 30px;
+  .calendar-input::-webkit-calendar-picker-indicator {
+    background: none;
+    width: 30px;
+    height: 30px;
+  }
+
+  .calendar-input::-webkit-datetime-edit {
+    display: none;
+  }
 }
 
 @layer utilities {

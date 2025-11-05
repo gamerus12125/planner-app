@@ -1,37 +1,23 @@
 'use client';
 import { TaskItem } from '@/components/tasks-page/task-item';
 import { useYear } from '@/hooks/useYear';
-import { TaskType } from '@/types/types';
 import { ArrowLeftIcon } from '@/ui/arrow-left-icon';
 import { ArrowRightIcon } from '@/ui/arrow-right-icon';
 import { Input } from '@/ui/input';
 import { daysToNumbers, numbersToMonths } from '@/utils/consts';
-import Database from '@tauri-apps/plugin-sql';
-import { useEffect, useState } from 'react';
+import { useTasksStore } from '@/utils/providers/tasks-store-provider';
+import { useState } from 'react';
 import { DayEvents } from '../day-events/day-events';
 import { CalendarItem } from './calendar-item';
 
 export const Calendar = () => {
-  const [tasks, setTasks] = useState<never[] | TaskType[]>([]);
-  const [isChanged, setIsChanged] = useState(false);
+  const { tasks } = useTasksStore(state => state);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const { month, year, decrementMonth, incrementMonth, setDate } = useYear(
     new Date().getFullYear(),
     new Date().getMonth(),
   );
-
-  useEffect(() => {
-    Database.load('sqlite:test.db').then(db => {
-      db.select(`SELECT * FROM tasks`)
-        .then((res: any) => {
-          setTasks(res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
-  }, [isChanged]);
 
   const getDates = (year: number, month: number) => {
     const dates = [];
@@ -48,7 +34,7 @@ export const Calendar = () => {
   const dates = getDates(year, month);
 
   return (
-    <div className="h-screen">
+    <div>
       <DayEvents date={currentDate} />
       <div className={'grid grid-cols-[1fr_max-content]'}>
         <div className="flex flex-col h-[calc(100vh-332px)]">
@@ -63,7 +49,7 @@ export const Calendar = () => {
                 {numbersToMonths[month.toString() as keyof typeof numbersToMonths]} {year}
               </p>
               <Input
-                className="w-[30px] h-[30px] p-0! text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')] selection:bg-transparent selection:text-transparent focus:bg-transparent focus:text-transparent"
+                className="w-[30px] h-[30px] p-0! calendar-input text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')]"
                 name="date"
                 id="date"
                 type="date"
@@ -104,8 +90,9 @@ export const Calendar = () => {
                   setCurrentDate={setCurrentDate}
                   hasDeadlineTask={tasks.some(
                     task =>
+                      task.deadlineDate &&
                       new Date(task.deadlineDate).toLocaleDateString() ===
-                      date.toLocaleDateString(),
+                        date.toLocaleDateString(),
                   )}
                 />
               ))}
@@ -115,21 +102,24 @@ export const Calendar = () => {
         <div className="border-2 rounded-xl p-2 flex flex-col gap-2 w-[21vw]">
           <p className="text-center">Задачи на этот день:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length > 0 &&
-              tasks
-                .filter(
-                  (task: TaskType) =>
-                    new Date(task.deadlineDate).toLocaleDateString() ===
+            {tasks
+              .filter(
+                task =>
+                  task.deadlineDate &&
+                  new Date(task.deadlineDate).toLocaleDateString() ===
                     currentDate.toLocaleDateString(),
-                )
-                .map(task => <TaskItem setIsChanged={setIsChanged} task={task} key={task.id} />)}
+              )
+              .map(task => (
+                <TaskItem task={task} key={task.id} />
+              ))}
           </ul>
           <p className="text-center">Задачи без срока:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
-            {tasks.length > 0 &&
-              tasks
-                .filter((task: TaskType) => !task.hasDeadline)
-                .map(task => <TaskItem setIsChanged={setIsChanged} task={task} key={task.id} />)}
+            {tasks
+              .filter(task => !task.deadlineDate)
+              .map(task => (
+                <TaskItem task={task} key={task.id} />
+              ))}
           </ul>
         </div>
       </div>

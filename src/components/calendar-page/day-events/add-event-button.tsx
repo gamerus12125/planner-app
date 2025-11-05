@@ -49,7 +49,7 @@ export const AddEventButton = ({}: {}) => {
         slotProps={{
           paper: {
             component: 'form',
-            onSubmit: (e: FormEvent<HTMLFormElement>) => handleSubmit(e),
+            onSubmit: handleSubmit,
           },
         }}>
         <DialogTitle className="bg-[#25283d]">Добавить событие</DialogTitle>

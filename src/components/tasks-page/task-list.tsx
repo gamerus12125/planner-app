@@ -1,37 +1,29 @@
 'use client';
 
-import { FilterType, TaskType } from '@/types/types';
+import { FilterType } from '@/types/types';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { filters } from '@/utils/consts';
+import { useTasksStore } from '@/utils/providers/tasks-store-provider';
 import { Menu, MenuItem } from '@mui/material';
-import Database from '@tauri-apps/plugin-sql';
-import { useEffect, useState } from 'react';
-import { AddTaskButton } from './add-task-button';
+import { useState } from 'react';
 import { TaskItem } from './task-item';
 
 export const TaskList = () => {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [changed, toggleChanged] = useState(false);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filter, setFilter] = useState<undefined | FilterType>(undefined);
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    Database.load('sqlite:test.db').then(db => {
-      db.select('SELECT * FROM tasks').then((res: any) => {
-        setTasks(res);
-      });
-    });
-  }, [changed]);
+  const { tasks, createTask } = useTasksStore(store => store);
 
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-center text-2xl mt-5">Список задач</h1>
 
       <div className="flex gap-2 p-2 border-[#7D82B8] border-2 rounded-xl mt-[50px]">
-        <AddTaskButton toggleChanged={toggleChanged} />
+        <Button className="p-2" onClick={() => createTask()}>
+          Добавить задачу
+        </Button>
         <Button
           type="button"
           onClick={e => {
@@ -58,12 +50,7 @@ export const TaskList = () => {
             )
             .map(task => (
               <li key={task.id}>
-                <TaskItem
-                  className="border-2 border-[#7D82B8]"
-                  key={task.id}
-                  task={task}
-                  setIsChanged={toggleChanged}
-                />
+                <TaskItem className="border-2 border-[#7D82B8]" key={task.id} task={task} />
               </li>
             ))}
         </ul>

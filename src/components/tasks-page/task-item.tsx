@@ -11,6 +11,7 @@ import { Input } from '@/ui/input';
 import { MoreIcon } from '@/ui/more-icon';
 import { priorities } from '@/utils/consts';
 import { formatDateToLocalString } from '@/utils/funcs/formatDateToLocalString';
+import { useTasksStore } from '@/utils/providers/tasks-store-provider';
 import {
   Dialog,
   DialogActions,
@@ -20,81 +21,45 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import Database from '@tauri-apps/plugin-sql';
 import { FormEvent, useState } from 'react';
 
-export const TaskItem = ({
-  task,
-  setIsChanged,
-  className = '',
-}: {
-  task: TaskType;
-  setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string;
-}) => {
+export const TaskItem = ({ task, className = '' }: { task: TaskType; className?: string }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEditingTask, setIsEditingTask] = useState(false);
-  const [hasDeadline, setHasDeadline] = useState(Boolean(task.hasDeadline));
+  const [hasDeadline, setHasDeadline] = useState(Boolean(task.deadlineDate));
   const [showTaskDescription, setShowTaskDescription] = useState(false);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const { editTask, removeTask } = useTasksStore(store => store);
+
+  const checkTask = () => {
+    editTask({ ...task, isComplete: task.isComplete ? 0 : 1 });
   };
 
-  const checkTask = (id: number) => {
-    Database.load('sqlite:test.db').then(db => {
-      db.execute(
-        `
-        UPDATE tasks
-        SET isComplete = $1
-        WHERE id = $2
-      `,
-        [task.isComplete ? 0 : 1, id],
-      ).then(res => {
-        setIsChanged((prev: boolean) => !prev);
-      });
-    });
-  };
-
-  const deleteTask = (id: number) => {
-    Database.load('sqlite:test.db').then(db => {
-      db.execute('DELETE FROM tasks WHERE id=$1', [id]).then(res => setIsChanged(prev => !prev));
-    });
-  };
-
-  const editTask = (id: number, e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (id: number, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get('name');
-    const date = formData.get('date');
-    const description = formData.get('description');
-    const color = formData.get('color');
-    const hasDeadline = Number.parseInt(formData.get('hasDeadline') as string);
-    const priority = formData.get('priority');
+    const name = formData.get('name')?.toString();
+    const date = formData.get('date')?.toString();
+    const description = formData.get('description')?.toString();
+    let color = formData.get('color')?.toString();
+
+    console.log(date);
+
     if (!name) return;
-    Database.load('sqlite:test.db').then(db => {
-      db.execute(
-        `
-        UPDATE tasks
-        SET name = $1, deadlineDate = $2, description = $3, color = $4, hasDeadline = $5, priority = $6
-        WHERE id = $7
-      `,
-        [
-          name,
-          date ? new Date(date?.toString() || '').toISOString() : null,
-          description,
-          color === '#000000' ? null : color,
-          hasDeadline,
-          priority,
-          id,
-        ],
-      ).then(res => {
-        setIsChanged((prev: boolean) => !prev);
-      });
-    });
+
+    if (color === '#000000') {
+      color = undefined;
+    }
+
+    const rawPriority = formData.get('priority')?.toString();
+
+    const priority: 'high' | 'middle' | 'low' | undefined =
+      rawPriority === 'high' || rawPriority === 'middle' || rawPriority === 'low'
+        ? rawPriority
+        : undefined;
+
+    editTask({ ...task, id, name, deadlineDate: date, description, color, priority });
   };
 
   return (
@@ -111,12 +76,12 @@ export const TaskItem = ({
         <div>
           <div className="gap-2 flex items-center">
             <p className="">{task.name}</p>
-            <div onClick={() => checkTask(task.id)} className="cursor-pointer">
+            <div onClick={() => checkTask()} className="cursor-pointer">
               <span
                 className={`flex items-center p-1 rounded-md ${
                   task.isComplete
                     ? ' bg-[#5E8C61] '
-                    : task.hasDeadline
+                    : task.deadlineDate
                       ? new Date(task.deadlineDate).getTime() >= Date.now()
                         ? new Date(task.deadlineDate).toDateString() === new Date().toDateString()
                           ? 'border-2 border-[#FBB13C]'
@@ -126,32 +91,33 @@ export const TaskItem = ({
                 }`}>
                 <Checkbox
                   checked={Boolean(task.isComplete)}
-                  className={`group-hover:block ${task.hasDeadline && 'hidden'}`}
+                  className={`group-hover:block ${task.deadlineDate && 'hidden'}`}
                 />
-                {task.hasDeadline && <ClockIcon className="group-hover:hidden" />}
-                {task.hasDeadline && new Date(task.deadlineDate).toLocaleString().slice(0, 17)}
+                {Boolean(task.deadlineDate) && <ClockIcon className="group-hover:hidden" />}
+                {Boolean(task.deadlineDate) &&
+                  task.deadlineDate &&
+                  new Date(task.deadlineDate).toLocaleString().slice(0, 17)}
               </span>
             </div>
-            <Button type="button" onClick={handleClick} className="border-none">
+            <Button
+              type="button"
+              onClick={e => setAnchorEl(e.currentTarget)}
+              className="border-none">
               <MoreIcon className="w-[30px] h-[30px]" />
             </Button>
-            <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
+            <Menu open={open} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}>
               <MenuItem
                 className="flex gap-1"
-                onClick={
-                  deleteTask
-                    ? () => {
-                        handleClose();
-                        deleteTask(task.id);
-                      }
-                    : undefined
-                }>
-                <CrossIcon className="w-[24px] h-[24px]" /> Удалить
+                onClick={() => {
+                  setAnchorEl(null);
+                  removeTask(task.id);
+                }}>
+                <CrossIcon className="w-6 h-6" /> Удалить
               </MenuItem>
               <MenuItem
                 className="flex gap-1"
                 onClick={() => {
-                  handleClose();
+                  setAnchorEl(null);
                   setIsEditingTask(true);
                 }}>
                 <EditIcon /> Редактировать
@@ -164,7 +130,7 @@ export const TaskItem = ({
                 paper: {
                   component: 'form',
                   onSubmit: (e: FormEvent<HTMLFormElement>) => {
-                    editTask?.(task.id, e);
+                    handleSubmit(task.id, e);
                     setIsEditingTask(false);
                   },
                 },
@@ -197,9 +163,9 @@ export const TaskItem = ({
                     id="date"
                     type="datetime-local"
                     defaultValue={
-                      task.hasDeadline
+                      task.deadlineDate
                         ? formatDateToLocalString(new Date(task.deadlineDate) || new Date())
-                        : new Date().toISOString().slice(0, 16)
+                        : ''
                     }
                     required={true}
                     className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
@@ -225,12 +191,13 @@ export const TaskItem = ({
                   Цвет задачи
                 </Input>
                 <label htmlFor="priority">Приоритет</label>
-                <Select id="priority" name="priority" defaultValue={task.priority}>
+                <Select id="priority" name="priority" defaultValue={task.priority || ''}>
                   {priorities.map(priority => (
                     <MenuItem key={priority.key} value={priority.key}>
                       {priority.name}
                     </MenuItem>
                   ))}
+                  <MenuItem value={''}>Без приоритета</MenuItem>
                 </Select>
               </DialogContent>
               <DialogActions className="bg-[#25283d]">
@@ -250,7 +217,7 @@ export const TaskItem = ({
                     showTaskDescription && 'rotate-90'
                   }`}
                   onClick={() => setShowTaskDescription(prev => !prev)}>
-                  <ArrowRightIcon className="w-[24px] h-[24px]" />
+                  <ArrowRightIcon className="w-6 h-6" />
                 </Button>
               </div>
             )}

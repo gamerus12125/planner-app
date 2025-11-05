@@ -14,10 +14,9 @@ export type TaskType = {
   name: string;
   description?: string;
   isComplete: number;
-  creationDate?: string;
-  deadlineDate: string;
+  creationDate: string;
+  deadlineDate?: string;
   color?: string;
-  hasDeadline: number;
   priority?: 'high' | 'middle' | 'low';
 };
 
