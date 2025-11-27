@@ -23,8 +23,6 @@ const createEventsTable = (db: Database) => {
 };
 const inter = Inter({ subsets: ['latin'] });
 
-let isTrayCreated = false;
-
 export default function RootLayout({
   children,
 }: Readonly<{

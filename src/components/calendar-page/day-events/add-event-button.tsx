@@ -1,8 +1,7 @@
-'use client';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { daysNumbers, numbersToDays } from '@/utils/consts';
-import { fromInputToNumberTime } from '@/utils/funcs/fromInputToNumberTime';
+import { formatFormDataEvent } from '@/utils/funcs/formatFormDataEvent';
 import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select } from '@mui/material';
 import { FormEvent, useState } from 'react';
@@ -13,22 +12,12 @@ export const AddEventButton = ({}: {}) => {
   const { addEvent } = useEventsStore(state => state);
 
   const createEvent = (formData: FormData) => {
-    const name = formData.get('name')?.toString();
-    const description = formData.get('description')?.toString();
-    const color = formData.get('color')?.toString();
-    const start = fromInputToNumberTime(formData.get('start') as string);
-    const end = fromInputToNumberTime(formData.get('end') as string);
-    const raw_date = formData.get('date')?.toString();
-    const repeat = formData.getAll('repeat').join('');
-
-    if (!name || !start || !end || (!isRepeat && !raw_date)) return;
-
-    const date = new Date(raw_date || '').toLocaleDateString();
-
-    addEvent({ name, description, color, start, end, repeat, date });
+    const data = formatFormDataEvent(formData);
+    if (!data) return;
+    addEvent(data);
   };
 
-  const closeForm = () => {
+  const handleClose = () => {
     setIsOpenForm(false);
     setIsRepeat(false);
   };
@@ -37,7 +26,7 @@ export const AddEventButton = ({}: {}) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     createEvent(formData);
-    closeForm();
+    handleClose();
   };
   return (
     <>
@@ -123,7 +112,7 @@ export const AddEventButton = ({}: {}) => {
           <Button type="submit" className="p-2">
             Добавить
           </Button>
-          <Button onClick={() => closeForm()} className="p-2">
+          <Button onClick={handleClose} className="p-2">
             Отмена
           </Button>
         </DialogActions>

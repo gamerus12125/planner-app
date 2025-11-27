@@ -1,4 +1,3 @@
-'use client';
 import { TaskItem } from '@/components/tasks-page/task-item';
 import { useYear } from '@/hooks/useYear';
 import { ArrowLeftIcon } from '@/ui/arrow-left-icon';
@@ -13,7 +12,6 @@ import { CalendarItem } from './calendar-item';
 export const Calendar = () => {
   const { tasks } = useTasksStore(state => state);
   const [currentDate, setCurrentDate] = useState(new Date());
-
   const { month, year, decrementMonth, incrementMonth, setDate } = useYear(
     new Date().getFullYear(),
     new Date().getMonth(),

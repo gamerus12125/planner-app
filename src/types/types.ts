@@ -1,12 +1,12 @@
 export type DayEventType = {
   id: number;
   name: string;
-  date?: string;
+  date: string | null;
   start: number;
   end: number;
-  color?: string;
-  description?: string;
-  repeat?: string;
+  color: string | null;
+  description: string | null;
+  repeat: string | null;
 };
 
 export type TaskType = {

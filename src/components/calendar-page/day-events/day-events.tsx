@@ -1,10 +1,9 @@
 'use client';
-import { DayEventType } from '@/types/types';
 import { hours, numbersToMonths } from '@/utils/consts';
 import { useEventsStore } from '@/utils/providers/events-store-provider';
-import { JSX, useEffect, useState } from 'react';
-import { EventDetails } from '../event-details/event-details';
+import { JSX } from 'react';
 import { AddEventButton } from './add-event-button';
+import { DayEvent } from './day-event';
 import { ShowEventsListButton } from './show-events-list-button';
 
 export const DayEvents = ({ date }: { date: Date }) => {
@@ -15,13 +14,6 @@ export const DayEvents = ({ date }: { date: Date }) => {
       event?.date === date.toLocaleDateString() || event.repeat?.includes(date.getDay().toString()),
   );
 
-  const [isOpenDetails, setIsOpenDetails] = useState<DayEventType | undefined>();
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    setIsOpenDetails(undefined);
-  }, [date]);
-
   const rows = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   const renderEvents = () => {
@@ -31,32 +23,8 @@ export const DayEvents = ({ date }: { date: Date }) => {
       const start = Math.floor(event.start / 60);
       const end = Math.ceil(event.end / 60);
       const row = Math.max(...rows.slice(start, end));
-      const width = 60 + 9;
-      const top = 32 * row + 20 + 44 + 16 + 24 + 5;
 
-      const left = (event.start / 60) * width + 34;
-      const eventWidth = (Math.floor(event.end - event.start) / 60) * width;
-
-      res.push(
-        <div
-          key={event.id}
-          className={`bg-green-700 absolute hover:scale-110 hover:z-10 hover:cursor-pointer transition-all transition-discrete ${
-            eventWidth < event.name.trim().length * 10 ? 'hover:w-max!' : ''
-          } `}
-          style={{
-            left: `${left}px`,
-            width: `${eventWidth}px`,
-            height: '30px',
-            top: `${top}px`,
-            backgroundColor: event.color,
-          }}
-          onClick={e => {
-            setIsOpenDetails(event);
-            setCoords({ x: e.clientX, y: e.clientY });
-          }}>
-          <p className="overflow-hidden whitespace-pre">{event.name}</p>
-        </div>,
-      );
+      res.push(<DayEvent key={event.id} event={event} row={row} />);
 
       for (let i = start; i < end; i++) {
         rows[i] = row + 1;
@@ -93,14 +61,6 @@ export const DayEvents = ({ date }: { date: Date }) => {
         </div>
         {res}
       </div>
-      {isOpenDetails && (
-        <EventDetails
-          event={isOpenDetails}
-          setIsOpen={setIsOpenDetails}
-          x={coords.x}
-          y={coords.y}
-        />
-      )}
     </>
   );
 };
