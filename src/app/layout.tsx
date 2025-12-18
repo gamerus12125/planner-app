@@ -1,5 +1,7 @@
 'use client';
+import { GetInitialData } from '@/components/get-initial-data';
 import { SideBar } from '@/components/side-bar/side-bar';
+import { DatabaseName } from '@/utils/consts';
 import { checkTable } from '@/utils/funcs/check-table';
 import { Provider } from '@/utils/providers/provider';
 import { getCurrentWindow } from '@tauri-apps/api/window';
@@ -21,7 +23,7 @@ const createEventsTable = (db: Database) => {
     'CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, date TEXT, start REAL, end REAL, color TEXT, description TEXT, repeat TEXT)',
   );
 };
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin', 'cyrillic'] });
 
 export default function RootLayout({
   children,
@@ -29,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    Database.load('sqlite:test.db').then(db => {
+    Database.load(DatabaseName).then(db => {
       let strings = ['name', 'creationDate', 'deadlineDate', 'color', 'description', 'priority'];
       let ints = ['id', 'isComplete'];
 
@@ -51,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <Provider>
+        <GetInitialData />
         <body className={inter.className}>
           <div className="grid grid-cols-[calc(20vw-16px)_calc(80vw-8px)] gap-2 p-2">
             <SideBar />

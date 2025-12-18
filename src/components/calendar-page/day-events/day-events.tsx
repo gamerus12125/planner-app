@@ -38,9 +38,9 @@ export const DayEvents = ({ date }: { date: Date }) => {
 
   return (
     <>
-      <div className="border-2 rounded-lg px-[30px] overflow-y-auto relative h-[250px] mb-8 p-6">
+      <div className="border-2 rounded-lg px-7.5 overflow-y-auto relative h-62.5 mb-8 p-6">
         <div>
-          <div className="flex gap-[50px] items-center mb-4">
+          <div className="flex gap-12.5 items-center mb-4">
             <h3 className="text-center text-xl underline underline-offset-8 whitespace-nowrap">
               {date.getDate()}{' '}
               {numbersToMonths[date.getMonth().toString() as keyof typeof numbersToMonths]}
@@ -48,11 +48,9 @@ export const DayEvents = ({ date }: { date: Date }) => {
             <AddEventButton />
             <ShowEventsListButton />
           </div>
-          <div className="flex gap-[60px] relative top-0">
+          <div className="flex gap-15 relative top-0">
             {hours.map(hour => (
-              <div
-                key={hour}
-                className="flex flex-col gap-[5px] justify-center items-center w-[9px]">
+              <div key={hour} className="flex flex-col gap-1.25 justify-center items-center w-2.25">
                 <span>{hour}</span>
                 <div className="w-0.5 bg-gray-500" style={{ height: `${row * 50}px` }}></div>
               </div>

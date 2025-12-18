@@ -1,4 +1,5 @@
 import { DayEventType } from '@/types/types';
+import { DatabaseName } from '@/utils/consts';
 import Database from '@tauri-apps/plugin-sql';
 import { createStore } from 'zustand/vanilla';
 
@@ -24,15 +25,15 @@ export const createEventsStore = (initState: EventsState = defaultInitState) => 
     ...initState,
     initEvents: async () => {
       try {
-        const db = await Database.load('sqlite:test.db');
-        const res: unknown[] = await db.select(`SELECT * FROM events`);
+        const db = await Database.load(DatabaseName);
+        const res = await db.select(`SELECT * FROM events`);
         set({ events: res as DayEventType[] });
       } catch (err) {
         console.log(err);
       }
     },
     addEvent: async event => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       try {
         await db.execute(
           `
@@ -54,7 +55,7 @@ export const createEventsStore = (initState: EventsState = defaultInitState) => 
       }
     },
     editEvent: async event => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       try {
         await db.execute(
           `UPDATE events SET name = $1, start = $2, end = $3, color = $4, description = $5, repeat = $6, date = $7 WHERE id = $8`,
@@ -75,7 +76,7 @@ export const createEventsStore = (initState: EventsState = defaultInitState) => 
       }
     },
     removeEvent: async id => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       await db.execute(`DELETE FROM events WHERE id = $1`, [id]);
       get().initEvents();
     },

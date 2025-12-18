@@ -1,4 +1,5 @@
 import { TaskType } from '@/types/types';
+import { DatabaseName } from '@/utils/consts';
 import Database from '@tauri-apps/plugin-sql';
 import { createStore } from 'zustand/vanilla';
 
@@ -24,7 +25,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
     ...initState,
     initTasks: async () => {
       try {
-        const db = await Database.load('sqlite:test.db');
+        const db = await Database.load(DatabaseName);
         const res = await db.select(`SELECT * FROM tasks`);
         set({ tasks: res as TaskType[] });
       } catch (err) {
@@ -32,7 +33,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
       }
     },
     createTask: async () => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       try {
         await db.execute('INSERT INTO tasks (name, isComplete, creationDate) VALUES ($1, $2, $3)', [
           'Новая задача',
@@ -45,7 +46,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
       }
     },
     editTask: async task => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       try {
         await db.execute(
           `UPDATE tasks
@@ -67,7 +68,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
       }
     },
     removeTask: async id => {
-      const db = await Database.load('sqlite:test.db');
+      const db = await Database.load(DatabaseName);
       await db.execute(`DELETE FROM tasks WHERE id = $1`, [id]);
       get().initTasks();
     },

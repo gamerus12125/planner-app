@@ -1,5 +1,7 @@
 import { FilterType, PriorityType, TaskType } from '@/types/types';
 
+export const DatabaseName = 'sqlite:test.db';
+
 export const numbersToDays = {
   '1': 'Понедельник',
   '2': 'Вторник',

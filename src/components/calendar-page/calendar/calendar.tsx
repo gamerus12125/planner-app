@@ -40,14 +40,14 @@ export const Calendar = () => {
             <button
               onClick={() => decrementMonth()}
               className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
-              <ArrowLeftIcon className="w-[30px] h-[30px]" />
+              <ArrowLeftIcon className="w-7.5 h-7.5" />
             </button>
-            <div className="flex gap-2 items-center justify-center w-[175px]">
+            <div className="flex gap-2 items-center justify-center w-43.75">
               <p>
                 {numbersToMonths[month.toString() as keyof typeof numbersToMonths]} {year}
               </p>
               <Input
-                className="w-[30px] h-[30px] p-0! calendar-input text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')]"
+                className="w-7.5 h-7.5 p-0! calendar-input text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')]"
                 name="date"
                 id="date"
                 type="date"
@@ -68,11 +68,11 @@ export const Calendar = () => {
             <button
               onClick={() => incrementMonth()}
               className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
-              <ArrowRightIcon className="w-[30px] h-[30px]" />
+              <ArrowRightIcon className="w-7.5 h-7.5" />
             </button>
           </div>
           <div className="h-[calc(100vh-368px)]">
-            <div className="grid grid-cols-7 h-[30px]">
+            <div className="grid grid-cols-7 h-7.5">
               {Object.keys(daysToNumbers).map(day => (
                 <div key={day} className="text-center overflow-hidden">
                   {day}
