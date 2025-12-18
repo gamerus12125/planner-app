@@ -1,11 +1,13 @@
+import { MouseEventHandler } from 'react';
+
 export const Checkbox = ({
   checked,
   className,
-  onClick
+  onClick,
 }: {
   checked?: boolean;
   className?: string;
-  onClick?: (e: any) => void;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }) => {
   return (
     <div onClick={onClick}>
@@ -16,8 +18,7 @@ export const Checkbox = ({
           height="24px"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <g id="Interface / Checkbox_Check">
             <path
               id="Vector"
@@ -36,8 +37,7 @@ export const Checkbox = ({
           height="24px"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <g id="Interface / Checkbox_Unchecked">
             <path
               id="Vector"

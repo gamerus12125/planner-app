@@ -36,7 +36,7 @@ export const DayEvent = ({ event, row }: { event: DayEventType; row: number }) =
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         onClose={() => setAnchorEl(null)}>
-        <EventDetails event={event} setIsOpen={setAnchorEl} />
+        <EventDetails event={event} onClose={() => setAnchorEl(null)} />
       </Popover>
     </>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { createEventsStore, EventsStore } from '@/stores/events-store';
-import { type ReactNode, createContext, useContext, useEffect, useRef } from 'react';
+import { type ReactNode, createContext, useContext, useState } from 'react';
 import { useStore } from 'zustand';
 
 export type EventsStoreApi = ReturnType<typeof createEventsStore>;
@@ -13,18 +13,9 @@ export interface EventsStoreProviderProps {
 }
 
 export const EventsStoreProvider = ({ children }: EventsStoreProviderProps) => {
-  const storeRef = useRef<EventsStoreApi | null>(null);
-  if (storeRef.current === null) {
-    storeRef.current = createEventsStore();
-  }
+  const [store] = useState(() => createEventsStore());
 
-  useEffect(() => {
-    storeRef.current?.getState().initEvents();
-  }, []);
-
-  return (
-    <EventsStoreContext.Provider value={storeRef.current}>{children}</EventsStoreContext.Provider>
-  );
+  return <EventsStoreContext.Provider value={store}>{children}</EventsStoreContext.Provider>;
 };
 
 export const useEventsStore = <T,>(selector: (store: EventsStore) => T): T => {

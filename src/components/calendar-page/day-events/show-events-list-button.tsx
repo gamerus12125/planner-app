@@ -6,14 +6,14 @@ import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material
 import { useState } from 'react';
 import { OptionsEventButton } from './options-event-button';
 
-export const ShowEventsListButton = ({}: {}) => {
+export const ShowEventsListButton = () => {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const { events } = useEventsStore(state => state);
 
   return (
     <>
       <Button
-        className="p-2 max-h-[60px] whitespace-nowrap"
+        className="p-2 max-h-15 whitespace-nowrap"
         onClick={() => {
           setIsOpenForm(true);
         }}>

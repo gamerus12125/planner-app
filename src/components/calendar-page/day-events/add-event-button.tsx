@@ -6,7 +6,7 @@ import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select } from '@mui/material';
 import { FormEvent, useState } from 'react';
 
-export const AddEventButton = ({}: {}) => {
+export const AddEventButton = () => {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const { addEvent } = useEventsStore(state => state);
@@ -63,7 +63,7 @@ export const AddEventButton = ({}: {}) => {
             <Select
               id="repeat"
               name="repeat"
-              className="bg-[#25283d] overflow-hidden w-[250px]"
+              className="bg-[#25283d] overflow-hidden w-62.5"
               multiple={true}
               defaultValue={[]}
               onChange={e => setIsRepeat(e.target.value.length !== 0)}>

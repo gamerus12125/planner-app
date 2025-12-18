@@ -1,7 +1,7 @@
 'use client';
 
 import { createTasksStore, TasksStore } from '@/stores/tasks-store';
-import { type ReactNode, createContext, useContext, useEffect, useRef } from 'react';
+import { type ReactNode, createContext, useContext, useState } from 'react';
 import { useStore } from 'zustand';
 
 export type TasksStoreApi = ReturnType<typeof createTasksStore>;
@@ -13,18 +13,9 @@ export interface TasksStoreProviderProps {
 }
 
 export const TasksStoreProvider = ({ children }: TasksStoreProviderProps) => {
-  const storeRef = useRef<TasksStoreApi | null>(null);
-  if (storeRef.current === null) {
-    storeRef.current = createTasksStore();
-  }
+  const [store] = useState(() => createTasksStore());
 
-  useEffect(() => {
-    storeRef.current?.getState().initTasks();
-  }, []);
-
-  return (
-    <TasksStoreContext.Provider value={storeRef.current}>{children}</TasksStoreContext.Provider>
-  );
+  return <TasksStoreContext.Provider value={store}>{children}</TasksStoreContext.Provider>;
 };
 
 export const useTasksStore = <T,>(selector: (store: TasksStore) => T): T => {

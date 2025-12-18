@@ -25,7 +25,7 @@ export const createEventsStore = (initState: EventsState = defaultInitState) => 
     initEvents: async () => {
       try {
         const db = await Database.load('sqlite:test.db');
-        const res: any[] = await db.select(`SELECT * FROM events`);
+        const res: unknown[] = await db.select(`SELECT * FROM events`);
         set({ events: res as DayEventType[] });
       } catch (err) {
         console.log(err);

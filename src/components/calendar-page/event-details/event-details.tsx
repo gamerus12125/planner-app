@@ -8,15 +8,9 @@ import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 
-export const EventDetails = ({
-  event,
-  setIsOpen,
-}: {
-  event: DayEventType;
-  setIsOpen: Function;
-}) => {
+export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose: () => void }) => {
   const [isRepeat, setIsRepeat] = useState(event?.repeat || false);
-  const { editEvent, removeEvent } = useEventsStore(state => state);
+  const { editEvent } = useEventsStore(state => state);
 
   const handleSubmit = (formData: FormData) => {
     const data = formatFormDataEvent(formData);
@@ -29,16 +23,11 @@ export const EventDetails = ({
     ) {
       editEvent({ ...event, name, description, color, start, end, repeat, date });
     }
-    setIsOpen(undefined);
-  };
-
-  const handleDelete = () => {
-    removeEvent(event.id);
-    setIsOpen(undefined);
+    onClose();
   };
 
   const handleClose = () => {
-    setIsOpen(undefined);
+    onClose();
   };
 
   if (!event) return null;
@@ -46,9 +35,7 @@ export const EventDetails = ({
   return (
     <form
       className="flex flex-col gap-3 border-2 border-[#7D82B8] bg-[#484a59] p-2 rounded-lg"
-      onSubmit={e => {
-        (e.preventDefault(), handleSubmit(new FormData(e.currentTarget)));
-      }}>
+      onSubmit={e => (e.preventDefault(), handleSubmit(new FormData(e.currentTarget)))}>
       <Input
         name="name"
         type="text"
@@ -71,7 +58,7 @@ export const EventDetails = ({
         <Select
           id="repeat"
           name="repeat"
-          className="bg-[#25283d] overflow-hidden w-[250px]"
+          className="bg-[#25283d] overflow-hidden w-62.5"
           multiple={true}
           defaultValue={event.repeat?.split(',') || []}
           onChange={e => setIsRepeat(e.target.value.length !== 0)}>
@@ -125,9 +112,6 @@ export const EventDetails = ({
         </Button>
         <Button type="button" onClick={handleClose} className="p-2">
           Отмена
-        </Button>
-        <Button type="button" onClick={handleDelete} className="p-2">
-          Удалить
         </Button>
       </div>
     </form>

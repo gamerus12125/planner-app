@@ -25,7 +25,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
     initTasks: async () => {
       try {
         const db = await Database.load('sqlite:test.db');
-        const res: any[] = await db.select(`SELECT * FROM tasks`);
+        const res = await db.select(`SELECT * FROM tasks`);
         set({ tasks: res as TaskType[] });
       } catch (err) {
         console.log(err);

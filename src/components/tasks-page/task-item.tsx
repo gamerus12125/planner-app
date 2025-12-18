@@ -1,5 +1,3 @@
-'use client';
-
 import { TaskType } from '@/types/types';
 import { ArrowRightIcon } from '@/ui/arrow-right-icon';
 import { Button } from '@/ui/button';
@@ -29,6 +27,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [hasDeadline, setHasDeadline] = useState(Boolean(task.deadlineDate));
   const [showTaskDescription, setShowTaskDescription] = useState(false);
+  const currentDate = new Date();
 
   const { editTask, removeTask } = useTasksStore(store => store);
 
@@ -67,7 +66,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
       <div className={`rounded-xl p-2 flex gap-2 items-center border-2 ${className}`}>
         {task.color && (
           <div
-            className="w-[15px] rounded-l-[10px]"
+            className="w-3.75 rounded-l-[10px]"
             style={{
               backgroundColor: task.color,
               height: showTaskDescription ? '75px' : '50px',
@@ -82,7 +81,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   task.isComplete
                     ? ' bg-[#5E8C61] '
                     : task.deadlineDate
-                      ? new Date(task.deadlineDate).getTime() >= Date.now()
+                      ? new Date(task.deadlineDate).getTime() >= currentDate.getTime()
                         ? new Date(task.deadlineDate).toDateString() === new Date().toDateString()
                           ? 'border-2 border-[#FBB13C]'
                           : 'border-2 border-[#5E8C61]'
@@ -103,7 +102,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
               type="button"
               onClick={e => setAnchorEl(e.currentTarget)}
               className="border-none">
-              <MoreIcon className="w-[30px] h-[30px]" />
+              <MoreIcon className="w-7.5 h-7.5" />
             </Button>
             <Menu open={open} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}>
               <MenuItem
@@ -213,7 +212,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
               <div>
                 <Button
                   type="button"
-                  className={`border-none p-1 focus:outline-none text-center text-[16px] h-[30px] w-[30px] ${
+                  className={`border-none p-1 focus:outline-none text-center text-[16px] h-7.5 w-7.5 ${
                     showTaskDescription && 'rotate-90'
                   }`}
                   onClick={() => setShowTaskDescription(prev => !prev)}>

@@ -14,6 +14,6 @@ export const formatFormDataEvent = (formData: FormData) => {
   const date = raw_date ? new Date(raw_date.toString()).toLocaleDateString() : null;
   const description = raw_description !== '' ? raw_description : null;
   const color = raw_color !== undefined ? raw_color : null;
-  const repeat = raw_repeat !== '' ? raw_repeat : null;
+  const repeat = isRepeat ? raw_repeat : null;
   return { name, description, color, start, end, repeat, date };
 };

@@ -5,8 +5,6 @@ description = "Calendar app"
 authors = ["Mihail Mishin"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 name = "calendar_app_lib"
 crate-type = ["lib", "cdylib", "staticlib"]

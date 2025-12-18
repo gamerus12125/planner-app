@@ -1,5 +1,3 @@
-'use client';
-
 import { FilterType } from '@/types/types';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -10,11 +8,12 @@ import { useState } from 'react';
 import { TaskItem } from './task-item';
 
 export const TaskList = () => {
-  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filter, setFilter] = useState<undefined | FilterType>(undefined);
   const [search, setSearch] = useState('');
   const { tasks, createTask } = useTasksStore(store => store);
+
+  const isFilterMenuOpen = Boolean(anchorEl);
 
   return (
     <div className="flex flex-col gap-2">
@@ -28,7 +27,6 @@ export const TaskList = () => {
           type="button"
           onClick={e => {
             setAnchorEl(e.currentTarget);
-            setIsFilterMenuOpen(true);
           }}>
           Сортировать по {filter && filter.name.toLowerCase()}
         </Button>
@@ -60,7 +58,7 @@ export const TaskList = () => {
           <MenuItem
             key={filter.key}
             onClick={() => {
-              setIsFilterMenuOpen(false);
+              setAnchorEl(null);
               setFilter(filter);
             }}>
             {filter.name}
@@ -68,7 +66,7 @@ export const TaskList = () => {
         ))}
         <MenuItem
           onClick={() => {
-            setIsFilterMenuOpen(false);
+            setAnchorEl(null);
             setFilter(undefined);
           }}>
           Сбросить
