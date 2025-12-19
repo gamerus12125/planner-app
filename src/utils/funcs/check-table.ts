@@ -10,9 +10,15 @@ export const checkTable = (
 ) => {
   db.select(`PRAGMA table_info(${table})`)
     .then(res => {
-      if (res && typeof res === 'object' && 'length' in res && typeof res.length === 'number') {
+      if (
+        res &&
+        typeof res === 'object' &&
+        'length' in res &&
+        typeof res.length === 'number' &&
+        res.length
+      ) {
         const checkedRes = res as { cid: number; name: string; type: string; notnull: number }[];
-        if (res.length !== strings.length + ints.length + (reals ? reals.length : 0)) {
+        if (checkedRes.length !== strings.length + ints.length + (reals ? reals.length : 0)) {
           db.execute(`DROP table ${table}`).then(() => createFunc(db));
           return;
         } else {
