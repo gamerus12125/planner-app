@@ -13,8 +13,7 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode
 .idea
 .DS_Store
 *.suo
@@ -25,9 +24,10 @@ dist-ssr
 
 # build dirs and files
 .next
+next-env.d.ts
 yarn.lock
 out
 /src-tauri/target
-/src-tauri/target/Cargo.lock
+/src-tauri/Cargo.lock
 /src-tauri/target/gen
 
