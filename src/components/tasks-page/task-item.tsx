@@ -19,7 +19,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 
 export const TaskItem = ({ task, className = '' }: { task: TaskType; className?: string }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -35,7 +35,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
     editTask({ ...task, isComplete: task.isComplete ? 0 : 1 });
   };
 
-  const handleSubmit = (id: number, e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (id: number, e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name')?.toString();
@@ -128,7 +128,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
               slotProps={{
                 paper: {
                   component: 'form',
-                  onSubmit: (e: FormEvent<HTMLFormElement>) => {
+                  onSubmit: (e: SubmitEvent<HTMLFormElement>) => {
                     handleSubmit(task.id, e);
                     setIsEditingTask(false);
                   },

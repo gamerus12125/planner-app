@@ -4,7 +4,7 @@ import { daysNumbers, numbersToDays } from '@/utils/consts';
 import { formatFormDataEvent } from '@/utils/funcs/formatFormDataEvent';
 import { useEventsStore } from '@/utils/providers/events-store-provider';
 import { Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 
 export const AddEventButton = () => {
   const [isOpenForm, setIsOpenForm] = useState(false);
@@ -22,7 +22,7 @@ export const AddEventButton = () => {
     setIsRepeat(false);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     createEvent(formData);
