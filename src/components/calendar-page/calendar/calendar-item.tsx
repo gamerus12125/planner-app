@@ -11,9 +11,9 @@ export const CalendarItem = ({
 }) => {
   return (
     <div
-      className={`flex justify-center items-center min-h-12.5 h-[90%] w-[90%] hover:bg-[#7D82B8] hover:cursor-pointer transition-all rounded-3xl
+      className={`flex justify-center items-center min-h-12.5 h-[90%] w-[90%] hover:bg-primary hover:cursor-pointer transition-all rounded-3xl
       ${hasDeadlineTask && ' border-2 border-amber-600 '}
-      ${date.toDateString() == currentDate.toDateString() && ' bg-[#7D82B8] '}`}
+      ${date.toDateString() == currentDate.toDateString() && ' bg-primary '}`}
       style={{
         gridColumn: `${date.getDay() || 7} / span 1`,
       }}

@@ -20,12 +20,12 @@ export const ShowEventsListButton = () => {
         Показать список событий
       </Button>
       <Dialog open={isOpenForm}>
-        <DialogTitle classes={{ root: 'bg-[#25283d]' }}>Список событий</DialogTitle>
-        <DialogContent classes={{ root: 'bg-[#25283d] overflow-y-scroll max-h-[400px]' }}>
+        <DialogTitle classes={{ root: 'bg-background' }}>Список событий</DialogTitle>
+        <DialogContent classes={{ root: 'bg-background overflow-y-scroll max-h-[400px]' }}>
           <div className="flex flex-col gap-2">
             {events.map(event => (
               <div
-                className="flex gap-2 items-center border-2 border-[#7D82B8] p-2 rounded-xl"
+                className="flex gap-2 items-center border-2 border-primary p-2 rounded-xl"
                 key={event.id}>
                 <p>{event.name}</p>
                 <div>{fromNumberToInputTime(event.start)}</div>
@@ -35,7 +35,7 @@ export const ShowEventsListButton = () => {
             ))}
           </div>
         </DialogContent>
-        <DialogActions classes={{ root: 'bg-[#25283d]' }}>
+        <DialogActions classes={{ root: 'bg-background' }}>
           <Button className="p-2" onClick={() => setIsOpenForm(false)}>
             Закрыть
           </Button>

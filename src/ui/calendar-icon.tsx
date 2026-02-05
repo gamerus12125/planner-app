@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 export function CalendarIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -6,11 +6,10 @@ export function CalendarIcon(props: SVGProps<SVGSVGElement>) {
       width="512"
       height="512"
       viewBox="0 0 512 512"
-      style={{color: "#000000"}}
+      style={{ color: '#000000' }}
       xmlns="http://www.w3.org/2000/svg"
-      className="h-[30px] w-[30px]"
-      {...props}
-    >
+      className="h-7.5 w-7.5"
+      {...props}>
       <rect
         width="512"
         height="512"
@@ -21,8 +20,7 @@ export function CalendarIcon(props: SVGProps<SVGSVGElement>) {
         stroke="transparent"
         strokeWidth="0"
         strokeOpacity="100%"
-        paintOrder="stroke"
-      ></rect>
+        paintOrder="stroke"></rect>
       <svg
         width="512px"
         height="512px"
@@ -31,17 +29,15 @@ export function CalendarIcon(props: SVGProps<SVGSVGElement>) {
         x="0"
         y="0"
         role="img"
-        style={{display: "inline-block", verticalAlign: "middle"}}
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        style={{ display: 'inline-block', verticalAlign: 'middle' }}
+        xmlns="http://www.w3.org/2000/svg">
         <g fill="#000000">
           <g
             fill="none"
             stroke="currentColor"
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth="2"
-          >
+            strokeWidth="2">
             <rect width="20" height="18" x="2" y="4" rx="4" />
             <path d="M8 2v4m8-4v4M2 10h20" />
           </g>

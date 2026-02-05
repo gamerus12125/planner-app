@@ -41,21 +41,21 @@ export const AddEventButton = () => {
             onSubmit: handleSubmit,
           },
         }}>
-        <DialogTitle className="bg-[#25283d]">Добавить событие</DialogTitle>
-        <DialogContent classes={{ root: 'flex flex-col gap-3 bg-[#25283d]' }}>
+        <DialogTitle className="bg-background">Добавить событие</DialogTitle>
+        <DialogContent classes={{ root: 'flex flex-col gap-3 bg-background' }}>
           <Input
             name="name"
             type="text"
             id="name"
             required={true}
-            className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+            className="border-2 border-primary focus:outline-none focus:border-secondary">
             Название
           </Input>
           <Input
             name="description"
             type="text"
             id="description"
-            className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+            className="border-2 border-primary focus:outline-none focus:border-secondary">
             Описание
           </Input>
           <div className="flex gap-2 items-center relative">
@@ -63,7 +63,7 @@ export const AddEventButton = () => {
             <Select
               id="repeat"
               name="repeat"
-              className="bg-[#25283d] overflow-hidden w-62.5"
+              className="bg-background overflow-hidden w-62.5"
               multiple={true}
               defaultValue={[]}
               onChange={e => setIsRepeat(e.target.value.length !== 0)}>
@@ -80,7 +80,7 @@ export const AddEventButton = () => {
               type="date"
               id="date"
               required={true}
-              className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+              className="border-2 border-primary focus:outline-none focus:border-secondary">
               Дата
             </Input>
           )}
@@ -89,7 +89,7 @@ export const AddEventButton = () => {
             type="time"
             id="start"
             required={true}
-            className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+            className="border-2 border-primary focus:outline-none focus:border-secondary">
             Время начала
           </Input>
           <Input
@@ -97,18 +97,18 @@ export const AddEventButton = () => {
             type="time"
             id="end"
             required={true}
-            className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+            className="border-2 border-primary focus:outline-none focus:border-secondary">
             Время окончания
           </Input>
           <Input
             name="color"
             type="color"
             id="color"
-            className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+            className="border-2 border-primary focus:outline-none focus:border-secondary">
             Цвет
           </Input>
         </DialogContent>
-        <DialogActions classes={{ root: 'bg-[#25283d]' }}>
+        <DialogActions classes={{ root: 'bg-background' }}>
           <Button type="submit" className="p-2">
             Добавить
           </Button>

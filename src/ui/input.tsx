@@ -73,7 +73,7 @@ export const Input = ({
               defaultValue={defaultValue}
               placeholder={placeholder}
               min={min}
-              className={`p-2 bg-[#25283d] text-white rounded-lg transition-all ${className}`}
+              className={`p-2 bg-background text-white rounded-lg transition-all ${className}`}
               onChange={onChange}
             />
           )}
@@ -86,7 +86,7 @@ export const Input = ({
           value={value}
           defaultValue={defaultValue}
           placeholder={placeholder}
-          className={`p-2 bg-[#25283d] text-white rounded-lg transition-all ${className}`}
+          className={`p-2 bg-background text-white rounded-lg transition-all ${className}`}
           onClick={onClick}
           onChange={onChange}
           id={id}

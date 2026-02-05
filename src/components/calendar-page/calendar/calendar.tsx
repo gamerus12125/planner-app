@@ -39,7 +39,7 @@ export const Calendar = () => {
           <div className="flex gap-5 justify-center items-center h-10">
             <button
               onClick={() => decrementMonth()}
-              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
+              className="p-2 hover:bg-primary rounded-lg transition-all">
               <ArrowLeftIcon className="w-7.5 h-7.5" />
             </button>
             <div className="flex gap-2 items-center justify-center w-43.75">
@@ -67,7 +67,7 @@ export const Calendar = () => {
             </div>
             <button
               onClick={() => incrementMonth()}
-              className="p-2 hover:bg-[#7D82B8] rounded-lg transition-all">
+              className="p-2 hover:bg-primary rounded-lg transition-all">
               <ArrowRightIcon className="w-7.5 h-7.5" />
             </button>
           </div>

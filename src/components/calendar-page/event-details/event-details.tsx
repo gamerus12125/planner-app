@@ -34,7 +34,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
 
   return (
     <form
-      className="flex flex-col gap-3 border-2 border-[#7D82B8] bg-[#484a59] p-2 rounded-lg"
+      className="flex flex-col gap-3 border-2 border-primary bg-accent-background p-2 rounded-lg"
       onSubmit={e => (e.preventDefault(), handleSubmit(new FormData(e.currentTarget)))}>
       <Input
         name="name"
@@ -42,7 +42,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         id="name"
         required={true}
         defaultValue={event.name}
-        className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+        className="border-2 border-primary focus:outline-none focus:border-secondary">
         Название
       </Input>
       <Input
@@ -50,7 +50,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         type="text"
         id="description"
         defaultValue={event.description || ''}
-        className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+        className="border-2 border-primary focus:outline-none focus:border-secondary">
         Описание
       </Input>
       <div className="flex gap-2 items-center relative">
@@ -58,7 +58,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         <Select
           id="repeat"
           name="repeat"
-          className="bg-[#25283d] overflow-hidden w-62.5"
+          className="bg-background overflow-hidden w-62.5"
           multiple={true}
           defaultValue={event.repeat?.split(',') || []}
           onChange={e => setIsRepeat(e.target.value.length !== 0)}>
@@ -76,7 +76,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
           id="date"
           required={true}
           defaultValue={event.date?.split('.').reverse().join('-')}
-          className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+          className="border-2 border-primary focus:outline-none focus:border-secondary">
           Дата
         </Input>
       )}
@@ -86,7 +86,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         id="start"
         required={true}
         defaultValue={fromNumberToInputTime(event.start)}
-        className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]">
+        className="border-2 border-primary focus:outline-none focus:border-secondary">
         Время начала
       </Input>
       <Input
@@ -94,7 +94,7 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         type="time"
         id="end"
         required={true}
-        className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]"
+        className="border-2 border-primary focus:outline-none focus:border-secondary"
         defaultValue={fromNumberToInputTime(event.end)}>
         Время окончания
       </Input>
@@ -102,8 +102,8 @@ export const EventDetails = ({ event, onClose }: { event: DayEventType; onClose:
         name="color"
         type="color"
         id="color"
-        className="border-2 border-[#7D82B8] focus:outline-none focus:border-[#E0C1B3]"
-        defaultValue={event.color ?? '#15803d'}>
+        className="border-2 border-primary focus:outline-none focus:border-secondary"
+        defaultValue={event.color ?? ''}>
         Цвет
       </Input>
       <div className="flex gap-2 items-center">

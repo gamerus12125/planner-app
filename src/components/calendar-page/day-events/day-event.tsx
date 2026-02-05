@@ -16,7 +16,7 @@ export const DayEvent = ({ event, row }: { event: DayEventType; row: number }) =
     <>
       <div
         key={event.id}
-        className={`bg-green-700 absolute hover:scale-110 hover:z-10 hover:cursor-pointer transition-all transition-discrete ${
+        className={`absolute hover:scale-110 hover:z-10 hover:cursor-pointer transition-all transition-discrete ${
           eventWidth < event.name.trim().length * 10 ? 'hover:w-max!' : ''
         } `}
         style={{

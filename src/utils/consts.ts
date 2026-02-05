@@ -40,15 +40,6 @@ export const numbersToMonths = {
   '11': 'Декабря',
 };
 
-export const datesNames = {
-  1: 'первое',
-  2: 'второе',
-  3: 'третье',
-  4: 'четвертое',
-  5: 'пятое',
-  6: 'шестое',
-};
-
 export const hours = [
   '00:00',
   '01:00',
