@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useYear = (initialYear: number, initialMonth: number) => {
   const [year, setYear] = useState(initialYear);
@@ -25,6 +25,6 @@ export const useYear = (initialYear: number, initialMonth: number) => {
   const setDate = (year: number, month: number) => {
     setYear(year);
     setMonth(month);
-  }
+  };
   return { date: new Date(), year, month, incrementMonth, decrementMonth, setDate };
 };

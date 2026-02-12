@@ -42,7 +42,7 @@ export const Input = ({
         <div
           className={`flex ${
             positioning === 'vertical' ? 'flex-col' : 'flex-row'
-          } items-center gap-3 justify-between ${divClassName}`}
+          } items-center justify-between gap-3 ${divClassName}`}
           onClick={onClick}>
           <label className="text-white" htmlFor={id}>
             {children}
@@ -59,7 +59,7 @@ export const Input = ({
                 defaultValue={defaultValue}
                 placeholder={placeholder}
                 min={min}
-                className={`opacity-0 w-0 h-0 ${className}`}
+                className={`h-0 w-0 opacity-0 ${className}`}
                 onChange={() => {}}
               />
             </>
@@ -73,7 +73,7 @@ export const Input = ({
               defaultValue={defaultValue}
               placeholder={placeholder}
               min={min}
-              className={`p-2 bg-background text-white rounded-lg transition-all ${className}`}
+              className={`rounded-lg bg-background p-2 text-white transition-all ${className}`}
               onChange={onChange}
             />
           )}
@@ -86,7 +86,7 @@ export const Input = ({
           value={value}
           defaultValue={defaultValue}
           placeholder={placeholder}
-          className={`p-2 bg-background text-white rounded-lg transition-all ${className}`}
+          className={`rounded-lg bg-background p-2 text-white transition-all ${className}`}
           onClick={onClick}
           onChange={onChange}
           id={id}

@@ -48,22 +48,22 @@ export const AddEventButton = () => {
             type="text"
             id="name"
             required={true}
-            className="border-2 border-primary focus:outline-none focus:border-secondary">
+            className="border-2 border-primary focus:border-secondary focus:outline-none">
             Название
           </Input>
           <Input
             name="description"
             type="text"
             id="description"
-            className="border-2 border-primary focus:outline-none focus:border-secondary">
+            className="border-2 border-primary focus:border-secondary focus:outline-none">
             Описание
           </Input>
-          <div className="flex gap-2 items-center relative">
+          <div className="relative flex items-center gap-2">
             <label htmlFor="repeat">Повторять каждый {isRepeat}</label>
             <Select
               id="repeat"
               name="repeat"
-              className="bg-background overflow-hidden w-62.5"
+              className="w-62.5 overflow-hidden bg-background"
               multiple={true}
               defaultValue={[]}
               onChange={e => setIsRepeat(e.target.value.length !== 0)}>
@@ -80,7 +80,7 @@ export const AddEventButton = () => {
               type="date"
               id="date"
               required={true}
-              className="border-2 border-primary focus:outline-none focus:border-secondary">
+              className="border-2 border-primary focus:border-secondary focus:outline-none">
               Дата
             </Input>
           )}
@@ -89,7 +89,7 @@ export const AddEventButton = () => {
             type="time"
             id="start"
             required={true}
-            className="border-2 border-primary focus:outline-none focus:border-secondary">
+            className="border-2 border-primary focus:border-secondary focus:outline-none">
             Время начала
           </Input>
           <Input
@@ -97,14 +97,14 @@ export const AddEventButton = () => {
             type="time"
             id="end"
             required={true}
-            className="border-2 border-primary focus:outline-none focus:border-secondary">
+            className="border-2 border-primary focus:border-secondary focus:outline-none">
             Время окончания
           </Input>
           <Input
             name="color"
             type="color"
             id="color"
-            className="border-2 border-primary focus:outline-none focus:border-secondary">
+            className="border-2 border-primary focus:border-secondary focus:outline-none">
             Цвет
           </Input>
         </DialogContent>

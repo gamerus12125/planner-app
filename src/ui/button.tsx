@@ -13,7 +13,7 @@ export const Button = ({
     <button
       onClick={onClick}
       type={type || 'button'}
-      className={`bg-background cursor-pointer hover:bg-secondary border-secondary border-2 hover:text-black rounded-lg transition-all ${className}`}>
+      className={`cursor-pointer rounded-lg border-2 border-secondary bg-background transition-all hover:bg-secondary hover:text-black ${className}`}>
       {children}
     </button>
   );

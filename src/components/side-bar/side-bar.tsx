@@ -2,15 +2,15 @@ import Link from 'next/link';
 
 export const SideBar = () => {
   return (
-    <div className="rounded-lg border-2 border-primary p-2 h-[calc(100vh-16px)]">
-      <ul className="flex flex-col justify-center items-center gap-1">
-        <li className="hover:bg-accent-background w-full rounded-lg">
-          <Link href={'/calendar'} className="h-full block p-2">
+    <div className="h-[calc(100vh-16px)] rounded-lg border-2 border-primary p-2">
+      <ul className="flex flex-col items-center justify-center gap-1">
+        <li className="w-full rounded-lg hover:bg-accent-background">
+          <Link href={'/calendar'} className="block h-full p-2">
             Календарь
           </Link>
         </li>
-        <li className="hover:bg-accent-background w-full rounded-lg">
-          <Link href="/" className="h-full block p-2">
+        <li className="w-full rounded-lg hover:bg-accent-background">
+          <Link href="/" className="block h-full p-2">
             Список задач
           </Link>
         </li>

@@ -38,19 +38,19 @@ export const DayEvents = ({ date }: { date: Date }) => {
 
   return (
     <>
-      <div className="border-2 rounded-lg px-7.5 overflow-y-auto relative h-62.5 mb-8 p-6">
+      <div className="relative mb-8 h-62.5 overflow-y-auto rounded-lg border-2 p-6 px-7.5">
         <div>
-          <div className="flex gap-12.5 items-center mb-4">
-            <h3 className="text-center text-xl underline underline-offset-8 whitespace-nowrap">
+          <div className="mb-4 flex items-center gap-12.5">
+            <h3 className="text-center text-xl whitespace-nowrap underline underline-offset-8">
               {date.getDate()}{' '}
               {numbersToMonths[date.getMonth().toString() as keyof typeof numbersToMonths]}
             </h3>
             <AddEventButton />
             <ShowEventsListButton />
           </div>
-          <div className="flex gap-15 relative top-0">
+          <div className="relative top-0 flex gap-15">
             {hours.map(hour => (
-              <div key={hour} className="flex flex-col gap-1.25 justify-center items-center w-2.25">
+              <div key={hour} className="flex w-2.25 flex-col items-center justify-center gap-1.25">
                 <span>{hour}</span>
                 <div className="w-0.5 bg-gray-500" style={{ height: `${row * 50}px` }}></div>
               </div>

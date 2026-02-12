@@ -17,9 +17,9 @@ export const TaskList = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-center text-2xl mt-5">Список задач</h1>
+      <h1 className="mt-5 text-center text-2xl">Список задач</h1>
 
-      <div className="flex gap-2 p-2 border-[#7D82B8] border-2 rounded-xl mt-[50px]">
+      <div className="mt-[50px] flex gap-2 rounded-xl border-2 border-[#7D82B8] p-2">
         <Button className="p-2" onClick={() => createTask()}>
           Добавить задачу
         </Button>
@@ -39,7 +39,7 @@ export const TaskList = () => {
         />
       </div>
       <div>
-        <ul className="overflow-auto flex flex-col gap-3">
+        <ul className="flex flex-col gap-3 overflow-auto">
           {(filter ? filter.sortFunction(tasks) : tasks)
             .filter(
               task =>

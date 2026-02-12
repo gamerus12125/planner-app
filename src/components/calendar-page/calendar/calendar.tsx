@@ -35,19 +35,19 @@ export const Calendar = () => {
     <div>
       <DayEvents date={currentDate} />
       <div className={'grid grid-cols-[1fr_max-content]'}>
-        <div className="flex flex-col h-[calc(100vh-332px)]">
-          <div className="flex gap-5 justify-center items-center h-10">
+        <div className="flex h-[calc(100vh-332px)] flex-col">
+          <div className="flex h-10 items-center justify-center gap-5">
             <button
               onClick={() => decrementMonth()}
-              className="p-2 hover:bg-primary rounded-lg transition-all">
-              <ArrowLeftIcon className="w-7.5 h-7.5" />
+              className="rounded-lg p-2 transition-all hover:bg-primary">
+              <ArrowLeftIcon className="h-7.5 w-7.5" />
             </button>
-            <div className="flex gap-2 items-center justify-center w-43.75">
+            <div className="flex w-43.75 items-center justify-center gap-2">
               <p>
                 {numbersToMonths[month.toString() as keyof typeof numbersToMonths]} {year}
               </p>
               <Input
-                className="w-7.5 h-7.5 p-0! calendar-input text-transparent! bg-contain bg-no-repeat bg-[url('/icons/calendar.png')]"
+                className="calendar-input h-7.5 w-7.5 bg-[url('/icons/calendar.png')] bg-contain bg-no-repeat p-0! text-transparent!"
                 name="date"
                 id="date"
                 type="date"
@@ -67,19 +67,19 @@ export const Calendar = () => {
             </div>
             <button
               onClick={() => incrementMonth()}
-              className="p-2 hover:bg-primary rounded-lg transition-all">
-              <ArrowRightIcon className="w-7.5 h-7.5" />
+              className="rounded-lg p-2 transition-all hover:bg-primary">
+              <ArrowRightIcon className="h-7.5 w-7.5" />
             </button>
           </div>
           <div className="h-[calc(100vh-368px)]">
-            <div className="grid grid-cols-7 h-7.5">
+            <div className="grid h-7.5 grid-cols-7">
               {Object.keys(daysToNumbers).map(day => (
-                <div key={day} className="text-center overflow-hidden">
+                <div key={day} className="overflow-hidden text-center">
                   {day}
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-7 min-h-[calc(100vh-398px)]">
+            <div className="grid min-h-[calc(100vh-398px)] grid-cols-7">
               {dates.map((date, index) => (
                 <CalendarItem
                   key={index}
@@ -97,7 +97,7 @@ export const Calendar = () => {
             </div>
           </div>
         </div>
-        <div className="border-2 rounded-xl p-2 flex flex-col gap-2 w-[21vw]">
+        <div className="flex w-[21vw] flex-col gap-2 rounded-xl border-2 p-2">
           <p className="text-center">Задачи на этот день:</p>
           <ul className="flex flex-col gap-2 overflow-y-auto">
             {tasks

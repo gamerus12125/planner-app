@@ -31,7 +31,7 @@ export const OptionsEventButton = ({ event }: { event: DayEventType }) => {
       </Button>
       <Menu open={open} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}>
         <MenuItem className="flex gap-1" onClick={handleRemove}>
-          <CrossIcon className="w-6 h-6" /> Удалить
+          <CrossIcon className="h-6 w-6" /> Удалить
         </MenuItem>
         <MenuItem className="flex gap-1" onClick={handleEdit}>
           <EditIcon /> Редактировать

@@ -13,7 +13,7 @@ export const ShowEventsListButton = () => {
   return (
     <>
       <Button
-        className="p-2 max-h-15 whitespace-nowrap"
+        className="max-h-15 p-2 whitespace-nowrap"
         onClick={() => {
           setIsOpenForm(true);
         }}>
@@ -25,7 +25,7 @@ export const ShowEventsListButton = () => {
           <div className="flex flex-col gap-2">
             {events.map(event => (
               <div
-                className="flex gap-2 items-center border-2 border-primary p-2 rounded-xl"
+                className="flex items-center gap-2 rounded-xl border-2 border-primary p-2"
                 key={event.id}>
                 <p>{event.name}</p>
                 <div>{fromNumberToInputTime(event.start)}</div>

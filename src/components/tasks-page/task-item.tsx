@@ -63,7 +63,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
 
   return (
     <>
-      <div className={`rounded-xl p-2 flex gap-2 items-center border-2 ${className}`}>
+      <div className={`flex items-center gap-2 rounded-xl border-2 p-2 ${className}`}>
         {task.color && (
           <div
             className="w-3.75 rounded-l-[10px]"
@@ -73,13 +73,13 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
             }}></div>
         )}
         <div>
-          <div className="gap-2 flex items-center">
+          <div className="flex items-center gap-2">
             <p className="">{task.name}</p>
             <div onClick={() => checkTask()} className="cursor-pointer">
               <span
-                className={`flex items-center p-1 rounded-md ${
+                className={`flex items-center rounded-md p-1 ${
                   task.isComplete
-                    ? ' bg-[#5E8C61] '
+                    ? 'bg-[#5E8C61]'
                     : task.deadlineDate
                       ? new Date(task.deadlineDate).getTime() >= currentDate.getTime()
                         ? new Date(task.deadlineDate).toDateString() === new Date().toDateString()
@@ -102,7 +102,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
               type="button"
               onClick={e => setAnchorEl(e.currentTarget)}
               className="border-none">
-              <MoreIcon className="w-7.5 h-7.5" />
+              <MoreIcon className="h-7.5 w-7.5" />
             </Button>
             <Menu open={open} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}>
               <MenuItem
@@ -111,7 +111,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   setAnchorEl(null);
                   removeTask(task.id);
                 }}>
-                <CrossIcon className="w-6 h-6" /> Удалить
+                <CrossIcon className="h-6 w-6" /> Удалить
               </MenuItem>
               <MenuItem
                 className="flex gap-1"
@@ -134,15 +134,15 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   },
                 },
               }}>
-              <DialogTitle className="bg-[#25283d]">Редактирование задачи</DialogTitle>
-              <DialogContent className="flex flex-col gap-3 bg-[#25283d]">
+              <DialogTitle className="bg-background">Редактирование задачи</DialogTitle>
+              <DialogContent className="flex flex-col gap-3 bg-background">
                 <Input
                   name="name"
                   id="name"
                   placeholder={task.name}
                   type="text"
                   defaultValue={task.name}
-                  className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
+                  className="border-2 border-primary focus:border-secondary focus:outline-none">
                   Название задачи
                 </Input>
                 <Input
@@ -153,7 +153,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   onClick={() => {
                     setHasDeadline(!hasDeadline);
                   }}
-                  className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
+                  className="border-2 border-primary focus:border-secondary focus:outline-none">
                   Есть крайний срок
                 </Input>
                 {hasDeadline && (
@@ -167,7 +167,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                         : ''
                     }
                     required={true}
-                    className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
+                    className="border-2 border-primary focus:border-secondary focus:outline-none">
                     Дата крайнего срока
                   </Input>
                 )}
@@ -178,7 +178,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   type="text"
                   placeholder={task.description}
                   defaultValue={task.description}
-                  className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
+                  className="border-2 border-primary focus:border-secondary focus:outline-none">
                   Описание задачи
                 </Input>
                 <Input
@@ -186,7 +186,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   id="color"
                   type="color"
                   defaultValue={task.color}
-                  className="border-2 border-[#7D82B8] focus:border-[#E0C1B3] focus: outline-none">
+                  className="border-2 border-primary focus:border-secondary focus:outline-none">
                   Цвет задачи
                 </Input>
                 <label htmlFor="priority">Приоритет</label>
@@ -199,7 +199,7 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
                   <MenuItem value={''}>Без приоритета</MenuItem>
                 </Select>
               </DialogContent>
-              <DialogActions className="bg-[#25283d]">
+              <DialogActions className="bg-background">
                 <Button className="p-2" type="submit">
                   Сохранить
                 </Button>
@@ -212,17 +212,17 @@ export const TaskItem = ({ task, className = '' }: { task: TaskType; className?:
               <div>
                 <Button
                   type="button"
-                  className={`border-none p-1 focus:outline-none text-center text-[16px] h-7.5 w-7.5 ${
+                  className={`h-7.5 w-7.5 border-none p-1 text-center text-[16px] focus:outline-none ${
                     showTaskDescription && 'rotate-90'
                   }`}
                   onClick={() => setShowTaskDescription(prev => !prev)}>
-                  <ArrowRightIcon className="w-6 h-6" />
+                  <ArrowRightIcon className="h-6 w-6" />
                 </Button>
               </div>
             )}
           </div>
           {showTaskDescription && (
-            <div className="bg-[#25283d] overflow-hidden">
+            <div className="overflow-hidden bg-background">
               <p>{task.description}</p>
             </div>
           )}
